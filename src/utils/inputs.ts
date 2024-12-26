@@ -19,6 +19,9 @@ export const getInputs = (): ActionInputs => {
 		theme: core.getInput("theme"),
 		override: core.getInput("override").toUpperCase() === "TRUE",
 	};
+	if (!inputs.target) {
+		throw new Error("The target input is required");
+	}
 	core.info(
 		`Inputs: ${Object.entries(inputs)
 			.map(([key, value]) => `${key}=${value}`)

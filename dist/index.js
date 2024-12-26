@@ -25916,13 +25916,50 @@ module.exports = {
 /***/ }),
 
 /***/ 3240:
-/***/ ((__unused_webpack_module, exports) => {
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.css = void 0;
-exports.css = `
+exports.generateCSS = generateCSS;
+exports.generateStyle = generateStyle;
+const core = __importStar(__nccwpck_require__(7484));
+const node_fs_1 = __nccwpck_require__(3024);
+const node_path_1 = __nccwpck_require__(6760);
+const css = /* css */ `
 h1 {
   color: red;
 }
@@ -25935,6 +25972,25 @@ li {
   margin: 0;
 }
 `.replace(/\s+/g, "");
+async function generateCSS(target, theme) {
+    if (!theme)
+        return generateStyle(css);
+    const targetDir = (0, node_path_1.resolve)(target);
+    const path = (0, node_path_1.join)(targetDir, theme);
+    try {
+        await node_fs_1.promises.access(path);
+    }
+    catch {
+        core.warning(`- Theme file not found: ${path}`);
+        return generateStyle(css);
+    }
+    const themeCss = await node_fs_1.promises.readFile(path, "utf-8");
+    core.debug(`- Using extended CSS: ${theme}`);
+    return generateStyle(css, themeCss);
+}
+function generateStyle(...css) {
+    return css.map((css) => /* html */ `<style type="text/css">${css}</style>`).join("\n");
+}
 
 
 /***/ }),
@@ -25984,6 +26040,8 @@ const node_path_1 = __nccwpck_require__(6760);
 const core = __importStar(__nccwpck_require__(7484));
 const glob_1 = __nccwpck_require__(1363);
 const css_1 = __nccwpck_require__(3240);
+const html_1 = __nccwpck_require__(7486);
+const list_1 = __nccwpck_require__(5919);
 async function generate(dir, inputs) {
     const paths = await (0, glob_1.glob)(`${dir.fullpath()}/*`, {
         ignore: inputs.ignore,
@@ -26000,58 +26058,137 @@ async function generate(dir, inputs) {
     }
     core.debug(`Generating index for: ${dir.fullpath()}`);
     core.debug(`- Found ${paths.length} target(s).`);
-    const list = generateList(paths);
-    const css = await generateCss(inputs.target, inputs.theme);
-    const html = generateHTML(dir, css, list);
+    const list = (0, list_1.generateList)(paths);
+    const css = await (0, css_1.generateCSS)(inputs.target, inputs.theme);
+    const html = (0, html_1.generateHTML)(dir, css, list);
     await node_fs_1.promises.writeFile((0, node_path_1.join)(dir.fullpath(), "index.html"), html, "utf-8");
     core.info(`Generated index for: ${dir.fullpath()}`);
 }
-function generateList(files) {
-    const links = files
-        .map((path) => {
-        const href = path.isDirectory() ? `${path.name}/` : path.name;
-        const ext = path.isDirectory() ? "dir" : path.name.split(".").pop();
-        return `<li><a href="${href}" data-name="${path.name}" data-type="${ext}">${path.name}</a></li>`;
-    })
-        .join("\n    ");
-    core.debug(`- Generated list: ${files.map((path) => path.name).join(", ")}`);
-    return `<ul>
-    ${links}
-  </ul>`;
-}
-async function generateCss(target, theme) {
-    const style = (...css) => css.map((css) => `<style type="text/css">${css}</style>`).join("\n");
-    if (!theme)
-        return style(css_1.css);
-    const targetDir = (0, node_path_1.resolve)(target);
-    const path = (0, node_path_1.join)(targetDir, theme);
-    try {
-        await node_fs_1.promises.access(path);
+
+
+/***/ }),
+
+/***/ 7486:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
     }
-    catch {
-        core.warning(`- Theme file not found: ${path}`);
-        return style(css_1.css);
-    }
-    const themeCss = await node_fs_1.promises.readFile(path, "utf-8");
-    core.debug(`- Using extended CSS: ${theme}`);
-    return style(css_1.css, themeCss);
-}
-function generateHTML(dir, css, list) {
-    const html = `<!DOCTYPE html>
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.generateHTML = generateHTML;
+const core = __importStar(__nccwpck_require__(7484));
+const html = /* html */ `
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Index of ${dir.name}</title>
-  ${css}
+  <title>Index of {{location}}</title>
+  {{css}}
 </head>
 <body>
-  <h1>Index of ${dir.name}</h1>
-  ${list}
+  <h1>Index of {{location}}</h1>
+  {{list}}
 </body>
-</html>`;
-    core.debug(`- Generated ${dir.parentPath}${dir.name}/index.html: ${html}`);
-    return html;
+</html>
+`;
+function generateHTML(dir, css, list) {
+    const result = html
+        .replaceAll("{{location}}", dir.name)
+        .replace("{{css}}", css)
+        .replace("{{list}}", list);
+    core.debug(`- Generated ${dir.parentPath}${dir.name}/index.html: ${result}`);
+    return result;
+}
+
+
+/***/ }),
+
+/***/ 5919:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.generateList = generateList;
+exports.generateListItem = generateListItem;
+const core = __importStar(__nccwpck_require__(7484));
+function generateList(files) {
+    const links = files.map(generateListItem).join("\n    ");
+    core.debug(`- Generated list: ${files.map((path) => path.name).join(", ")}`);
+    return /* html */ `<ul>
+    ${links}
+  </ul>`;
+}
+function generateListItem(path) {
+    const href = path.isDirectory() ? `${path.name}/` : path.name;
+    const ext = path.isDirectory() ? "dir" : path.name.split(".").pop();
+    return /* html */ `<li><a href="${href}" data-name="${path.name}" data-type="${ext}">${path.name}</a></li>`;
 }
 
 
@@ -26222,7 +26359,7 @@ exports.getInputs = void 0;
 const core = __importStar(__nccwpck_require__(7484));
 const getInputs = () => {
     const inputs = {
-        target: core.getInput("target") || "dist",
+        target: core.getInput("target"),
         ignore: core
             .getInput("ignore")
             ?.split(",")
@@ -26231,6 +26368,9 @@ const getInputs = () => {
         theme: core.getInput("theme"),
         override: core.getInput("override").toUpperCase() === "TRUE",
     };
+    if (!inputs.target) {
+        throw new Error("The target input is required");
+    }
     core.info(`Inputs: ${Object.entries(inputs)
         .map(([key, value]) => `${key}=${value}`)
         .join(", ")}`);
