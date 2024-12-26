@@ -15,6 +15,7 @@
 		"dev": "local-action . src/main.ts .env",
 		"build": "ncc build src/index.ts -o dist --source-map --license licenses.txt",
 		"test": "vitest",
+		"coverage": "vitest --coverage",
 		"check": "biome check",
 		"fix": "biome check --write"
 	},
@@ -29,6 +30,7 @@
 		"@github/local-action": "^2.2.1",
 		"@types/node": "^22.10.2",
 		"@vercel/ncc": "^0.38.3",
+		"@vitest/coverage-v8": "^2.1.8",
 		"typescript": "^5.7.2",
 		"vitest": "^2.1.8"
 	}

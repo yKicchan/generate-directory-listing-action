@@ -6,5 +6,8 @@ export default defineConfig({
 		env: {
 			TZ: "Asia/Tokyo",
 		},
+		coverage: {
+			reporter: ["text", "json-summary", "html"],
+		},
 	},
 });
