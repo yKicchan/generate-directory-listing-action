@@ -1,0 +1,36 @@
+name: 'Generate Directory Indexing Action'
+description: 'Generate index.html files for directory listing.'
+author: 'yKicchan'
+
+branding:
+  icon: 'heart'
+  color: 'red'
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
+
+inputs:
+  target:
+    description: 'Path to target directory.'
+    required: false
+    default: 'dist'
+  ignore:
+    description: |
+      Pattern to ignore files or directories.
+      Multiple patterns can be separated by commas.
+      ex. `node_modules, **/*.log`
+    required: false
+  showHiddenFiles:
+    description: 'Show hidden files in the directory listing.'
+    required: false
+    default: 'false'
+  theme:
+    description: |
+      Path to a custom CSS file for styling.
+      Must be a relative path from the target directory.
+    required: false
+  override:
+    description: 'Override existing index.html files.'
+    required: false
+    default: 'false'
