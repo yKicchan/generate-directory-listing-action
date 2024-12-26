@@ -1,8 +1,8 @@
 Lang: [🇺🇸](./README.md) [🇯🇵](./README.ja.md)
 
-[![license](https://img.shields.io/github/license/yKicchan/generate-directory-indexing-action)](https://github.com/yKicchan/generate-directory-indexing-action/blob/main/LICENSE)
+[![license](https://img.shields.io/github/license/yKicchan/generate-directory-listing-action)](https://github.com/yKicchan/generate-directory-listing-action/blob/main/LICENSE)
 
-# Generate Directory Indexing Action
+# Generate Directory Listing Action
 
 この Action は指定のディレクトリ下を探索できる `index.html` を生成します。  
 GitHub Pages などで公開する静的なページのブラウジングに便利です。
@@ -12,8 +12,8 @@ GitHub Pages などで公開する静的なページのブラウジングに便�
 最も簡単な使い方はこの Action を呼び出し、ディレクトリを指定することです。
 
 ```yml
-- name: Generate Directory Indexing
-  uses: yKicchan/generate-directory-indexing-action@v1
+- name: Generate Directory listing
+  uses: yKicchan/generate-directory-listing-action@v1
   with:
     target: dist
 ```
@@ -23,8 +23,8 @@ GitHub Pages などで公開する静的なページのブラウジングに便�
 `ignore` オプションを利用することで、特定のパターンにマッチするファイルを除外することができます。
 
 ```yml
-- name: Generate Directory Indexing
-  uses: yKicchan/generate-directory-indexing-action@v1
+- name: Generate Directory listing
+  uses: yKicchan/generate-directory-listing-action@v1
   with:
     target: dist
     ignore: "**/*.map"
@@ -33,8 +33,8 @@ GitHub Pages などで公開する静的なページのブラウジングに便�
 複数のパターンを指定したい場合は、カンマ区切りで指定します。
 
 ```yml
-- name: Generate Directory Indexing
-  uses: yKicchan/generate-directory-indexing-action@v1
+- name: Generate Directory listing
+  uses: yKicchan/generate-directory-listing-action@v1
   with:
     target: dist
     ignore: "**/*.map, **/secret"
@@ -45,8 +45,8 @@ GitHub Pages などで公開する静的なページのブラウジングに便�
 追加の CSS を読み込ませて、出力する `index.html` の見た目をカスタマイズすることができます。
 
 ```yml
-- name: Generate Directory Indexing
-  uses: yKicchan/generate-directory-indexing-action@v1
+- name: Generate Directory listing
+  uses: yKicchan/generate-directory-listing-action@v1
   with:
     target: dist
     # target ディレクトリからの相対パスを指定します

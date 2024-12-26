@@ -1,8 +1,8 @@
 Lang: [🇺🇸](./README.md) [🇯🇵](./README.ja.md)
 
-[![license](https://img.shields.io/github/license/yKicchan/generate-directory-indexing-action)](https://github.com/yKicchan/generate-directory-indexing-action/blob/main/LICENSE)
+[![license](https://img.shields.io/github/license/yKicchan/generate-directory-listing-action)](https://github.com/yKicchan/generate-directory-listing-action/blob/main/LICENSE)
 
-# Generate Directory Indexing Action
+# Generate Directory Listing Action
 
 This Action generates an `index.html` by exploring the specified directory.  
 It is useful for browsing static pages hosted on platforms like GitHub Pages.
@@ -12,8 +12,8 @@ It is useful for browsing static pages hosted on platforms like GitHub Pages.
 The simplest way to use this Action is to invoke it and specify the target directory.
 
 ```yml
-- name: Generate Directory Indexing
-  uses: yKicchan/generate-directory-indexing-action@v1
+- name: Generate Directory listing
+  uses: yKicchan/generate-directory-listing-action@v1
   with:
     target: dist
 ```
@@ -23,8 +23,8 @@ The simplest way to use this Action is to invoke it and specify the target direc
 By using the ignore option, you can exclude files that match specific patterns.
 
 ```yml
-- name: Generate Directory Indexing
-  uses: yKicchan/generate-directory-indexing-action@v1
+- name: Generate Directory listing
+  uses: yKicchan/generate-directory-listing-action@v1
   with:
     target: dist
     ignore: "**/*.map"
@@ -33,8 +33,8 @@ By using the ignore option, you can exclude files that match specific patterns.
 To specify multiple patterns, separate them with commas.
 
 ```yml
-- name: Generate Directory Indexing
-  uses: yKicchan/generate-directory-indexing-action@v1
+- name: Generate Directory listing
+  uses: yKicchan/generate-directory-listing-action@v1
   with:
     target: dist
     ignore: "**/*.map, **/secret"
@@ -45,8 +45,8 @@ To specify multiple patterns, separate them with commas.
 You can load additional CSS to customize the appearance of the generated index.html.
 
 ```yml
-- name: Generate Directory Indexing
-  uses: yKicchan/generate-directory-indexing-action@v1
+- name: Generate Directory listing
+  uses: yKicchan/generate-directory-listing-action@v1
   with:
     target: dist
     # Specify the path relative to the target directory

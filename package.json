@@ -1,15 +1,15 @@
 {
-	"name": "generate-directory-indexing-action",
+	"name": "generate-directory-listing-action",
 	"version": "1.0.0",
 	"main": "dist/index.js",
 	"author": "yKicchan",
   "private": true,
 	"license": "MIT",
-	"description": "GitHub Actions to generate directory indexing",
-  "homepage": "https://github.com/yKicchan/generate-directory-indexing-action",
+	"description": "GitHub Actions to generate directory listing",
+  "homepage": "https://github.com/yKicchan/generate-directory-listing-action",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yKicchan/generate-directory-indexing-action.git"
+    "url": "git+https://github.com/yKicchan/generate-directory-listing-action.git"
   },
 	"scripts": {
 		"dev": "local-action . src/main.ts .env",

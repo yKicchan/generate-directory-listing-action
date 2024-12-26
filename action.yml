@@ -1,4 +1,4 @@
-name: 'Generate Directory Indexing Action'
+name: 'Generate Directory Listing Action'
 description: 'Generate index.html files for directory listing.'
 author: 'yKicchan'
 
