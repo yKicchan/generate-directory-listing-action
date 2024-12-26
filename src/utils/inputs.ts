@@ -10,7 +10,7 @@ export type ActionInputs = {
 
 export const getInputs = (): ActionInputs => {
 	const inputs = {
-		target: core.getInput("target") || "dist",
+		target: core.getInput("target"),
 		ignore: core
 			.getInput("ignore")
 			?.split(",")

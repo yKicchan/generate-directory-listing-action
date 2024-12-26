@@ -13,8 +13,7 @@ runs:
 inputs:
   target:
     description: 'Path to target directory.'
-    required: false
-    default: 'dist'
+    required: true
   ignore:
     description: |
       Pattern to ignore files or directories.
