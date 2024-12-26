@@ -3,14 +3,14 @@
 	"version": "1.0.0",
 	"main": "dist/index.js",
 	"author": "yKicchan",
-  "private": true,
+	"private": true,
 	"license": "MIT",
 	"description": "GitHub Actions to generate directory listing",
-  "homepage": "https://github.com/yKicchan/generate-directory-listing-action",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/yKicchan/generate-directory-listing-action.git"
-  },
+	"homepage": "https://github.com/yKicchan/generate-directory-listing-action",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/yKicchan/generate-directory-listing-action.git"
+	},
 	"scripts": {
 		"dev": "local-action . src/main.ts .env",
 		"build": "ncc build src/index.ts -o dist --source-map --license licenses.txt",
