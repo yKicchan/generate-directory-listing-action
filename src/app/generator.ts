@@ -1,5 +1,5 @@
 import { promises as fs } from "node:fs";
-import { join, resolve } from "node:path";
+import { join } from "node:path";
 import * as core from "@actions/core";
 import { type Path, glob } from "glob";
 import type { ActionInputs } from "src/utils/inputs";

@@ -13,7 +13,6 @@ permissions:
 
 jobs:
   ci:
-    name: TypeScript Tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -26,13 +25,12 @@ jobs:
           cache: npm
       - name: Install Dependencies
         run: npm ci
-      - name: Check TypeScript
+      - name: Check Code
         run: npm run check
-      - name: Test
+      - name: Run Test
         run: npm run test
 
   action:
-    name: GitHub Actions Test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
