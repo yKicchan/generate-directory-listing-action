@@ -1,3 +1,4 @@
+import fs from "node:fs";
 import * as core from "@actions/core";
 import bytes from "bytes";
 import type { Path } from "glob";
@@ -24,6 +25,7 @@ export function Table({ files }: P) {
 }
 
 function TableRow({ path }: { path: Path }) {
+	const file = fs.statSync(path.fullpath());
 	const href = path.isDirectory() ? `${path.name}/` : path.name;
 	const ext = path.isDirectory() ? "dir" : path.name.split(".").pop();
 	return (
@@ -31,8 +33,8 @@ function TableRow({ path }: { path: Path }) {
 			<td>
 				<a href={href}>{path.name}</a>
 			</td>
-			<td>{bytes(path.size ?? 0)}</td>
-			<td>{path.mtime?.toLocaleString() ?? "-"}</td>
+			<td>{bytes(file.size)}</td>
+			<td>{file.mtime.toLocaleString()}</td>
 		</tr>
 	);
 }
