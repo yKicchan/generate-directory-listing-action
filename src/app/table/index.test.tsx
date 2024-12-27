@@ -1,15 +1,26 @@
+import fs from "node:fs";
 import { render, within } from "@testing-library/preact";
 import type { Path } from "glob";
-import { describe, expect } from "vitest";
+import { beforeEach, describe, expect } from "vitest";
 import { type P, Table } from "./index";
 
+const mockStatSync = vi.spyOn(fs, "statSync");
+
 describe("Table", () => {
+	beforeEach(() => {
+		mockStatSync.mockClear();
+		mockStatSync.mockReturnValue({
+			size: 1024,
+			mtime: new Date("2000-01-01"),
+		} as fs.Stats);
+	});
+
 	const setup = ({ files }: P) => render(<Table files={files} />);
 
 	it("files があるとき、table が生成される", () => {
 		const files = [
-			{ name: "file1.txt", isDirectory: () => false },
-			{ name: "file2.png", isDirectory: () => false },
+			{ name: "file1.txt", isDirectory: () => false, fullpath: () => "file1.txt" },
+			{ name: "file2.png", isDirectory: () => false, fullpath: () => "file2.png" },
 		] as Path[];
 		const screen = setup({ files });
 
@@ -38,7 +49,7 @@ describe("Table", () => {
 	});
 
 	it("アイテムがディレクトリのとき、href と type がディレクトリ用になる", () => {
-		const paths = [{ name: "dir", isDirectory: () => true }] as Path[];
+		const paths = [{ name: "dir", isDirectory: () => true, fullpath: () => "dir" }] as Path[];
 		const { getAllByRole } = setup({ files: paths });
 
 		const dir = getAllByRole("row")[1];

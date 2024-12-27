@@ -13,8 +13,7 @@ describe("Contents", () => {
 	});
 
 	it("viewType が Table の場合、table が表示される", () => {
-		const files = [{ name: "test", isDirectory: () => false }] as Path[];
-		const { getByRole } = setup({ files, viewType: ViewTypes.Table });
+		const { getByRole } = setup({ viewType: ViewTypes.Table });
 		expect(getByRole("table")).toBeVisible();
 	});
 });
