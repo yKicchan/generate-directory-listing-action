@@ -40,7 +40,7 @@ export function generateStyle(...css: string[]) {
 	return css.map((css) => `<style>${css}</style>`).join("\n");
 }
 
-function css(strings: TemplateStringsArray, ...values: unknown[]): string {
+export function css(strings: TemplateStringsArray, ...values: unknown[]): string {
 	let result = strings[0];
 	for (let i = 0; i < values.length; i++) {
 		result += `${values[i]}${strings[i + 1]}`;

@@ -7,7 +7,7 @@ import { generateCSS } from "./css";
 import { generateHTML } from "./html";
 import { generateList } from "./list";
 
-export async function generate(dir: Path, inputs: ActionInputs) {
+export async function generate(root: string, dir: Path, inputs: ActionInputs) {
 	const paths = await glob(`${dir.fullpath()}/*`, {
 		ignore: inputs.ignore,
 		dot: inputs.showHiddenFiles,
@@ -27,7 +27,8 @@ export async function generate(dir: Path, inputs: ActionInputs) {
 
 	const list = generateList(paths);
 	const css = await generateCSS(inputs.target, inputs.theme);
-	const html = generateHTML(dir, css, list);
+	const location = dir.fullpath().substring(root.length) || "/";
+	const html = generateHTML(location, css, list);
 
 	await fs.writeFile(join(dir.fullpath(), "index.html"), html, "utf-8");
 	core.info(`Generated index for: ${dir.fullpath()}`);

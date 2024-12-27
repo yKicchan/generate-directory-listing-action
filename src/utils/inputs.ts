@@ -2,9 +2,9 @@ import * as core from "@actions/core";
 
 export type ActionInputs = {
 	target: string;
-	ignore?: string[];
+	ignore: string[];
 	showHiddenFiles: boolean;
-	theme?: string;
+	theme: string;
 	override: boolean;
 };
 
@@ -14,7 +14,8 @@ export const getInputs = (): ActionInputs => {
 		ignore: core
 			.getInput("ignore")
 			?.split(",")
-			.map((i) => i.trim()),
+			.map((i) => i.trim())
+			.filter(Boolean),
 		showHiddenFiles: core.getInput("showHiddenFiles").toUpperCase() === "TRUE",
 		theme: core.getInput("theme"),
 		override: core.getInput("override").toUpperCase() === "TRUE",

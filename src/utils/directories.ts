@@ -12,5 +12,5 @@ export async function getDirectories(target: ActionInputs["target"], ignore: Act
 
 	const paths = directories.map((d) => d.fullpath()).join("\n  ");
 	core.debug(`Found ${directories.length} directories: \n  ${paths}`);
-	return directories;
+	return { root: targetDir, directories };
 }

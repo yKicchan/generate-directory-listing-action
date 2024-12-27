@@ -15,5 +15,5 @@
 		"skipLibCheck": true,
 		"types": ["vitest/globals"]
 	},
-	"exclude": ["./dist", "./node_modules", "./__tests__", "./coverage"]
+	"exclude": ["./dist", "./node_modules", "./coverage"]
 }

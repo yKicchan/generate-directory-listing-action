@@ -12,8 +12,8 @@
 		"url": "git+https://github.com/yKicchan/generate-directory-listing-action.git"
 	},
 	"scripts": {
-		"dev": "local-action . src/main.ts .env",
-		"build": "ncc build src/index.ts -o dist --source-map --license licenses.txt",
+		"dev": "local-action . src/app/main.ts .env",
+		"build": "ncc build src/index.ts -o dist -m --license licenses.txt",
 		"test": "vitest",
 		"coverage": "vitest --coverage",
 		"check": "biome check",

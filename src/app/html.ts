@@ -1,5 +1,4 @@
 import * as core from "@actions/core";
-import type { Path } from "glob";
 
 const template = `
 <!DOCTYPE html>
@@ -17,8 +16,8 @@ const template = `
 </html>
 `;
 
-export function generateHTML(dir: Path, css: string, list: string) {
-	const result = template.replaceAll("{{location}}", dir.name).replace("{{css}}", css).replace("{{list}}", list);
-	core.debug(`- Generated ${dir.parentPath}${dir.name}/index.html: ${result}`);
+export function generateHTML(location: string, css: string, list: string) {
+	const result = template.replaceAll("{{location}}", location).replace("{{css}}", css).replace("{{list}}", list);
+	core.debug(`- Generated ${location}/index.html: ${result}`);
 	return result;
 }

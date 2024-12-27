@@ -1,7 +1,7 @@
 import * as core from "@actions/core";
-import { generate } from "./app/generator";
-import { getDirectories } from "./utils/directories";
-import { getInputs } from "./utils/inputs";
+import { getDirectories } from "../utils/directories";
+import { getInputs } from "../utils/inputs";
+import { generate } from "./generator";
 
 /**
  * The main function for the action.
@@ -12,10 +12,10 @@ export async function run() {
 	core.info(`Starting action at ${start.toLocaleString()}`);
 
 	const inputs = getInputs();
-	const directories = await getDirectories(inputs.target, inputs.ignore);
+	const { root, directories } = await getDirectories(inputs.target, inputs.ignore);
 
 	for (const dir of directories) {
-		await generate(dir, inputs);
+		await generate(root, dir, inputs);
 	}
 
 	const end = new Date();
