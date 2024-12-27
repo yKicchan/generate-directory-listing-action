@@ -22,7 +22,6 @@
 	"packageManager": "npm@10.5.1+sha1.a5add41e0d4338f72421888b583745125f3bf1ba",
 	"dependencies": {
 		"@actions/core": "^1.11.1",
-		"@vanilla-extract/css": "^1.17.0",
 		"glob": "^11.0.0"
 	},
 	"devDependencies": {
