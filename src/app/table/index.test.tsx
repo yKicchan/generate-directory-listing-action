@@ -9,18 +9,21 @@ const mockStatSync = vi.spyOn(fs, "statSync");
 describe("Table", () => {
 	beforeEach(() => {
 		mockStatSync.mockClear();
-		mockStatSync.mockReturnValue({
-			size: 1024,
-			mtime: new Date("2000-01-01"),
-		} as fs.Stats);
 	});
 
 	const setup = ({ files }: P) => render(<Table files={files} />);
 
 	it("files があるとき、table が生成される", () => {
+		mockStatSync.mockReturnValue({
+			isFile: () => true,
+			isDirectory: () => false,
+			size: 1024,
+			mtime: new Date("2000-01-01"),
+		} as fs.Stats);
+
 		const files = [
-			{ name: "file1.txt", isDirectory: () => false, fullpath: () => "file1.txt" },
-			{ name: "file2.png", isDirectory: () => false, fullpath: () => "file2.png" },
+			{ name: "file1.txt", fullpath: () => "file1.txt" },
+			{ name: "file2.png", fullpath: () => "file2.png" },
 		] as Path[];
 		const screen = setup({ files });
 
@@ -49,7 +52,14 @@ describe("Table", () => {
 	});
 
 	it("アイテムがディレクトリのとき、href と type がディレクトリ用になる", () => {
-		const paths = [{ name: "dir", isDirectory: () => true, fullpath: () => "dir" }] as Path[];
+		mockStatSync.mockReturnValue({
+			isFile: () => false,
+			isDirectory: () => true,
+			size: 1024,
+			mtime: new Date("2000-01-01"),
+		} as fs.Stats);
+
+		const paths = [{ name: "dir", fullpath: () => "dir" }] as Path[];
 		const { getAllByRole } = setup({ files: paths });
 
 		const dir = getAllByRole("row")[1];

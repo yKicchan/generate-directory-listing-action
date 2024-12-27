@@ -2,6 +2,7 @@ import fs from "node:fs";
 import * as core from "@actions/core";
 import bytes from "bytes";
 import type { Path } from "glob";
+import { getDirSize } from "../../utils/directories";
 
 export interface P {
 	files: Path[];
@@ -26,14 +27,18 @@ export function Table({ files }: P) {
 
 function TableRow({ path }: { path: Path }) {
 	const file = fs.statSync(path.fullpath());
-	const href = path.isDirectory() ? `${path.name}/` : path.name;
-	const ext = path.isDirectory() ? "dir" : path.name.split(".").pop();
+
+	const href = file.isDirectory() ? `${path.name}/` : path.name;
+	const ext = file.isDirectory() ? "dir" : path.name.split(".").pop();
+
+	const size = file.isFile() ? file.size : file.isDirectory() ? getDirSize(path.fullpath()) : 0;
+
 	return (
 		<tr data-name={path.name} data-type={ext} data-testid={path.name}>
 			<td>
 				<a href={href}>{path.name}</a>
 			</td>
-			<td>{bytes(file.size)}</td>
+			<td>{bytes(size)}</td>
 			<td>{file.mtime.toLocaleString()}</td>
 		</tr>
 	);
