@@ -6,7 +6,6 @@ build({
 	bundle: true,
 	outfile: "./dist/index.js",
 	minify: true,
-	sourcemap: true,
 	loader: { ".tsx": "tsx", ".ts": "ts", ".css": "text" },
 }).catch((e) => {
 	process.stderr.write(e.stderr);
