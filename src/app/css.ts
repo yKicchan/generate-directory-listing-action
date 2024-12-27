@@ -5,7 +5,7 @@ import type { ActionInputs } from "../utils/inputs";
 
 import * as self from "./css";
 
-export const css = /* css */ `
+export const styles = css`
 h1 {
   color: red;
 }
@@ -20,7 +20,7 @@ li {
 `.replace(/\s+/g, "");
 
 export async function generateCSS(target: ActionInputs["target"], theme: ActionInputs["theme"]) {
-	if (!theme) return self.generateStyle(css);
+	if (!theme) return self.generateStyle(styles);
 
 	const targetDir = resolve(target);
 	const path = join(targetDir, theme);
@@ -28,14 +28,22 @@ export async function generateCSS(target: ActionInputs["target"], theme: ActionI
 		await fs.access(path);
 	} catch {
 		core.warning(`- Theme file not found: ${path}`);
-		return self.generateStyle(css);
+		return self.generateStyle(styles);
 	}
 
 	const themeCss = await fs.readFile(path, "utf-8");
 	core.debug(`- Using extended CSS: ${theme}`);
-	return self.generateStyle(css, themeCss);
+	return self.generateStyle(styles, themeCss);
 }
 
 export function generateStyle(...css: string[]) {
-	return css.map((css) => /* html */ `<style type="text/css">${css}</style>`).join("\n");
+	return css.map((css) => `<style>${css}</style>`).join("\n");
+}
+
+function css(strings: TemplateStringsArray, ...values: unknown[]): string {
+	let result = strings[0];
+	for (let i = 0; i < values.length; i++) {
+		result += `${values[i]}${strings[i + 1]}`;
+	}
+	return result;
 }

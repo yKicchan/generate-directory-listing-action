@@ -1,7 +1,7 @@
 import * as core from "@actions/core";
 import type { Path } from "glob";
 
-const html = /* html */ `
+const template = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,7 +18,7 @@ const html = /* html */ `
 `;
 
 export function generateHTML(dir: Path, css: string, list: string) {
-	const result = html.replaceAll("{{location}}", dir.name).replace("{{css}}", css).replace("{{list}}", list);
+	const result = template.replaceAll("{{location}}", dir.name).replace("{{css}}", css).replace("{{list}}", list);
 	core.debug(`- Generated ${dir.parentPath}${dir.name}/index.html: ${result}`);
 	return result;
 }
