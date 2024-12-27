@@ -22,11 +22,13 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
-      - name: Generate coverage report
+      - name: Build
+        run: npm run build
+      - name: Run test & generate coverage report
         run: npm run coverage
-      - name: Make Coverage Badge
+      - name: Make coverage badge
         run: npx make-coverage-badge
-      - name: Generate Directory Listing
+      - name: Generate directory listing
         uses: ./
         with:
           target: "."
