@@ -1,14 +1,9 @@
 import * as core from "@actions/core";
 import { beforeEach } from "vitest";
-import { getInputs } from "./inputs";
+import { type ActionInputs, getInputs } from "./inputs";
+import { ViewTypes } from "./view-types";
 
-type Environments = Partial<{
-	target: string;
-	ignore: string;
-	showHiddenFiles: string;
-	theme: string;
-	override: string;
-}>;
+type Environments = Partial<Record<keyof ActionInputs, string>>;
 const mockGetInput = vi.spyOn(core, "getInput");
 const setup = (environments?: Environments) =>
 	mockGetInput.mockImplementation((name: string) => {
@@ -23,6 +18,8 @@ const setup = (environments?: Environments) =>
 				return environments?.theme ?? "";
 			case "override":
 				return environments?.override ?? "";
+			case "viewType":
+				return environments?.viewType ?? "";
 			default:
 				return "";
 		}
@@ -96,5 +93,28 @@ describe("getInputs", () => {
 		setup({ override: "" });
 		const result = getInputs();
 		expect(result.override).toBe(false);
+	});
+
+	it("viewType を取得できる", () => {
+		setup({ viewType: ViewTypes.Table });
+		const result = getInputs();
+		expect(result.viewType).toBe("TABLE");
+	});
+
+	it("viewType が指定されていない場合は TABLE が返る", () => {
+		setup({ viewType: "" });
+		const result = getInputs();
+		expect(result.viewType).toBe("TABLE");
+	});
+
+	it("viewType は大文字になる", () => {
+		setup({ viewType: "table" });
+		const result = getInputs();
+		expect(result.viewType).toBe("TABLE");
+	});
+
+	it("viewType が不正な場合はエラーが発生する", () => {
+		setup({ viewType: "INVALID" });
+		expect(() => getInputs()).toThrowError();
 	});
 });

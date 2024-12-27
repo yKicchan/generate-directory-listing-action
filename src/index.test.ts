@@ -1,4 +1,4 @@
-import * as app from "./app/main";
+import * as app from "./core/main";
 
 // 実際に書き込まれないようモックしておく
 vi.mock("node:fs", async (importOriginal) => {

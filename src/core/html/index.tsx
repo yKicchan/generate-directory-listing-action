@@ -1,5 +1,5 @@
 import type { Path } from "glob";
-import { List } from "../../components/list";
+import { App } from "../../app";
 import type { ActionInputs } from "../../utils/inputs";
 import { CSS } from "../css";
 
@@ -21,8 +21,7 @@ export function HTML({ root, dir, files, inputs }: P) {
 				<CSS target={inputs.target} theme={inputs.theme} />
 			</head>
 			<body>
-				<h1>Index of {location}</h1>
-				<List files={files} />
+				<App location={location} files={files} viewType={inputs.viewType} />
 			</body>
 		</html>
 	);

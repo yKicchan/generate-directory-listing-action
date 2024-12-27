@@ -1,6 +1,7 @@
 import { beforeEach, expect } from "vitest";
 import * as inputs from "../utils/inputs";
 import type { ActionInputs } from "../utils/inputs";
+import { ViewTypes } from "../utils/view-types";
 import * as generator from "./generator";
 import { run } from "./main";
 
@@ -14,6 +15,7 @@ const setup = (inputs: Partial<Pick<ActionInputs, "target" | "ignore">> = {}) =>
 		showHiddenFiles: false,
 		theme: "",
 		override: false,
+		viewType: ViewTypes.Table,
 		...inputs,
 	});
 	mockGenerate.mockResolvedValue();

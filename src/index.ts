@@ -1,6 +1,6 @@
 /**
  * The entrypoint for the action.
  */
-import { run } from "./app/main";
+import { run } from "./core/main";
 
 run();
