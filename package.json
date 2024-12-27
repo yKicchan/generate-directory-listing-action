@@ -12,8 +12,8 @@
 		"url": "git+https://github.com/yKicchan/generate-directory-listing-action.git"
 	},
 	"scripts": {
-		"dev": "local-action . src/app/main.ts .env",
-		"build": "ncc build src/index.ts -o dist -m --license licenses.txt",
+		"dev": "npm run build && node --env-file=.env dist/index.js",
+		"build": "node esbuild.config.mjs",
 		"test": "vitest",
 		"coverage": "vitest --coverage",
 		"check": "biome check",
@@ -22,14 +22,20 @@
 	"packageManager": "npm@10.5.1+sha1.a5add41e0d4338f72421888b583745125f3bf1ba",
 	"dependencies": {
 		"@actions/core": "^1.11.1",
-		"glob": "^11.0.0"
+		"glob": "^11.0.0",
+		"preact": "^10.25.3",
+		"preact-render-to-string": "^6.5.12"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
 		"@github/local-action": "^2.2.1",
+		"@preact/preset-vite": "^2.9.3",
+		"@testing-library/jest-dom": "^6.6.3",
+		"@testing-library/preact": "^3.2.4",
 		"@types/node": "^22.10.2",
-		"@vercel/ncc": "^0.38.3",
 		"@vitest/coverage-v8": "^2.1.8",
+		"esbuild": "^0.24.2",
+		"happy-dom": "^16.0.0",
 		"typescript": "^5.7.2",
 		"vitest": "^2.1.8"
 	}

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../src/app/css/index.module.css"],
+  "sourcesContent": ["h1 {\n\tcolor: red;\n}\n\nul {\n\tmargin: 0;\n}\n\nli {\n\tmargin: 0;\n}\n"],
+  "mappings": "AAAA,GACC,MAAO,GACR,CAEA,GAIA,GARA,OAKS,CACT",
+  "names": []
+}

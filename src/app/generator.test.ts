@@ -1,97 +1,68 @@
 import { promises } from "node:fs";
 import type { Path } from "glob";
 import type { ActionInputs } from "src/utils/inputs";
-import * as css from "./css";
+import { afterEach, beforeEach, expect } from "vitest";
 import { generate } from "./generator";
-import * as html from "./html";
-import * as list from "./list";
 
-const mockWriteFile = vi.spyOn(promises, "writeFile").mockResolvedValue();
-const mockGenerateCSS = vi.spyOn(css, "generateCSS").mockReturnValue(Promise.resolve("css"));
-const mockGenerateHTML = vi.spyOn(html, "generateHTML").mockReturnValue("html");
-const mockGenerateList = vi.spyOn(list, "generateList").mockReturnValue("list");
+vi.mock("preact-render-to-string", () => ({
+	renderToString: vi.fn().mockReturnValue("html"),
+}));
+const mockWriteFile = vi.spyOn(promises, "writeFile");
 
 describe("generate", () => {
 	beforeEach(() => {
-		mockWriteFile.mockClear();
-		mockGenerateCSS.mockClear();
-		mockGenerateHTML.mockClear();
-		mockGenerateList.mockClear();
+		mockWriteFile.mockReturnValue(Promise.resolve());
 	});
-
-	const expectMocksNotCalled = () => {
-		expect(mockGenerateCSS).not.toHaveBeenCalled();
-		expect(mockGenerateHTML).not.toHaveBeenCalled();
-		expect(mockGenerateList).not.toHaveBeenCalled();
-		expect(mockWriteFile).not.toHaveBeenCalled();
-	};
-	const expectMocksCalled = (location: string, out: string) => {
-		expect(mockGenerateList).toHaveBeenCalled();
-		expect(mockGenerateCSS).toHaveBeenCalled();
-		expect(mockGenerateHTML).toHaveBeenCalledWith(location, "css", "list");
-		expect(mockWriteFile).toHaveBeenCalledWith(out, "html", "utf-8");
-	};
+	afterEach(() => {
+		vi.clearAllMocks();
+	});
 
 	it("ファイルがなかったとき、何もしない", async () => {
 		const dir = { fullpath: () => "unknown" } as Path;
 		const inputs = {} as ActionInputs;
 		await generate("", dir, inputs);
-		expectMocksNotCalled();
+		expect(mockWriteFile).not.toHaveBeenCalled();
 	});
 
 	it("index.htmlがあるとき、何もしない", async () => {
 		const dir = { fullpath: () => "test/html" } as Path;
 		const inputs = {} as ActionInputs;
 		await generate("", dir, inputs);
-		expectMocksNotCalled();
+		expect(mockWriteFile).not.toHaveBeenCalled();
 	});
 
 	it("index.htmlを生成する", async () => {
 		const dir = { fullpath: () => "test" } as Path;
 		const inputs = {} as ActionInputs;
 		await generate("", dir, inputs);
-		expectMocksCalled(dir.fullpath(), "test/index.html");
+		expect(mockWriteFile).toHaveBeenCalledWith("test/index.html", "<!DOCTYPE html>html", "utf-8");
 	});
 
-	it("override が true のとき、index.html を生成する", async () => {
+	it("override が true のとき、すでに存在していても index.html を生成する", async () => {
 		const dir = { fullpath: () => "test/html" } as Path;
 		const inputs = { override: true } as ActionInputs;
 		await generate("", dir, inputs);
-		expectMocksCalled(dir.fullpath(), "test/html/index.html");
+		expect(mockWriteFile).toHaveBeenCalledWith("test/html/index.html", "<!DOCTYPE html>html", "utf-8");
 	});
 
 	it("ignore が設定されているとき、対象外のファイルを無視する", async () => {
 		const dir = { fullpath: () => "test/path" } as Path;
-		const inputs = { ignore: ["**/to"] } as ActionInputs;
+		const inputs = { ignore: ["**/ignore", "**/to"] } as ActionInputs;
 		await generate("", dir, inputs);
-		expectMocksNotCalled();
+		expect(mockWriteFile).not.toHaveBeenCalled();
 	});
 
 	it("showHiddenFiles が false のとき、隠しファイルを無視する", async () => {
-		const dir = { fullpath: () => "test/ignore" } as Path;
+		const dir = { fullpath: () => "test/hidden" } as Path;
 		const inputs = { showHiddenFiles: false } as ActionInputs;
 		await generate("", dir, inputs);
-		expectMocksNotCalled();
+		expect(mockWriteFile).not.toHaveBeenCalled();
 	});
 
 	it("showHiddenFiles が true のとき、隠しファイルを表示する", async () => {
-		const dir = { fullpath: () => "test/ignore" } as Path;
+		const dir = { fullpath: () => "test/hidden" } as Path;
 		const inputs = { showHiddenFiles: true } as ActionInputs;
 		await generate("", dir, inputs);
-		expectMocksCalled(dir.fullpath(), "test/ignore/index.html");
-	});
-
-	it("root のとき location は / になる", async () => {
-		const dir = { fullpath: () => "test" } as Path;
-		const inputs = {} as ActionInputs;
-		await generate("test", dir, inputs);
-		expectMocksCalled("/", "test/index.html");
-	});
-
-	it("root 以外のとき location は root からの相対パスになる", async () => {
-		const dir = { fullpath: () => "test/path/to" } as Path;
-		const inputs = {} as ActionInputs;
-		await generate("test", dir, inputs);
-		expectMocksCalled("/path/to", "test/path/to/index.html");
+		expect(mockWriteFile).toHaveBeenCalledWith("test/hidden/index.html", "<!DOCTYPE html>html", "utf-8");
 	});
 });

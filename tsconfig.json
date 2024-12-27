@@ -13,7 +13,9 @@
 		"forceConsistentCasingInFileNames": true,
 		"strict": true,
 		"skipLibCheck": true,
-		"types": ["vitest/globals"]
+		"types": ["preact", "vitest/globals", "@testing-library/jest-dom"],
+		"jsx": "react-jsx",
+		"jsxImportSource": "preact"
 	},
 	"exclude": ["./dist", "./node_modules", "./coverage"]
 }

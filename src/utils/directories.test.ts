@@ -9,7 +9,7 @@ describe("getDirectories", () => {
 	});
 
 	it("ignore で指定したディレクトリを除外できる", async () => {
-		const result = await getDirectories("test", ["**/ignore"]);
+		const result = await getDirectories("test", ["**/path/to"]);
 		expect(result.directories).toHaveLength(4);
 	});
 
