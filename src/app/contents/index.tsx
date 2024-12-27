@@ -1,6 +1,6 @@
 import type { Path } from "glob";
 import { ViewTypes } from "../../utils/view-types";
-import { List } from "../list";
+import { Table } from "../table";
 
 export interface P {
 	files: Path[];
@@ -18,8 +18,8 @@ export function Contents({ files, viewType }: P) {
 function SwitchView({ files, viewType }: P) {
 	switch (viewType) {
 		case ViewTypes.Table:
-			return <List files={files} />;
+			return <Table files={files} />;
 		default:
-			return <List files={files} />;
+			return <Table files={files} />;
 	}
 }

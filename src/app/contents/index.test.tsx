@@ -12,9 +12,9 @@ describe("Contents", () => {
 		expect(getByRole("main")).toBeVisible();
 	});
 
-	it("viewType が List の場合、List が表示される", () => {
+	it("viewType が Table の場合、table が表示される", () => {
 		const files = [{ name: "test", isDirectory: () => false }] as Path[];
 		const { getByRole } = setup({ files, viewType: ViewTypes.Table });
-		expect(getByRole("list")).toBeVisible();
+		expect(getByRole("table")).toBeVisible();
 	});
 });

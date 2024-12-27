@@ -27,7 +27,7 @@ export function CSS({ target, theme }: P) {
 	return (
 		<>
 			{base}
-			<style>{themeCss}</style>
+			<style>{themeCss.replace(/\s+/g, "")}</style>
 		</>
 	);
 }

@@ -12,16 +12,25 @@
 		"url": "git+https://github.com/yKicchan/generate-directory-listing-action.git"
 	},
 	"scripts": {
+		"presb": "rm -rf ./test",
+		"sb": "sh ./scripts/sandbox.sh",
+		"predev": "npm run sb",
 		"dev": "npm run build && node --env-file=.env dist/index.js",
+		"postdev": "npm run presb",
 		"build": "node esbuild.config.mjs",
-		"test": "vitest",
-		"coverage": "vitest --coverage",
+		"pretest": "npm run sb",
+		"test": "vitest run",
+		"posttest": "npm run presb",
+		"precoverage": "npm run sb",
+		"coverage": "vitest run --coverage",
+		"postcoverage": "npm run presb",
 		"check": "biome check",
 		"fix": "biome check --write"
 	},
 	"packageManager": "npm@10.5.1+sha1.a5add41e0d4338f72421888b583745125f3bf1ba",
 	"dependencies": {
 		"@actions/core": "^1.11.1",
+		"bytes": "^3.1.2",
 		"glob": "^11.0.0",
 		"preact": "^10.25.3",
 		"preact-render-to-string": "^6.5.12"
@@ -33,6 +42,7 @@
 		"@testing-library/jest-dom": "^6.6.3",
 		"@testing-library/preact": "^3.2.4",
 		"@total-typescript/ts-reset": "^0.6.1",
+		"@types/bytes": "^3.1.5",
 		"@types/node": "^22.10.2",
 		"@vitest/coverage-v8": "^2.1.8",
 		"esbuild": "^0.24.2",
