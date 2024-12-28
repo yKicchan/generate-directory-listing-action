@@ -24,10 +24,10 @@ jobs:
       - name: Make coverage badge
         run: npx make-coverage-badge
       - name: Generate directory listing
-        uses: ./
+        uses: yKicchan/generate-directory-listing-action@v1
         with:
           target: "."
-          ignore: "**/node_modules"
+          ignore: "node_modules"
       - name: Upload artifacts
         uses: actions/upload-pages-artifact@v3
         with:

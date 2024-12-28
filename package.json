@@ -6,7 +6,7 @@
 	"author": "yKicchan",
 	"private": true,
 	"license": "MIT",
-	"homepage": "https://github.com/yKicchan/generate-directory-listing-action#generate-directory-listing-action",
+	"homepage": "https://github.com/yKicchan/generate-directory-listing-action#readme",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/yKicchan/generate-directory-listing-action.git"
