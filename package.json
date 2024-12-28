@@ -1,7 +1,7 @@
 {
 	"name": "generate-directory-listing-action",
 	"description": "GitHub Actions to generate directory listing",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"main": "src/core/main.ts",
 	"author": "yKicchan",
 	"private": true,
