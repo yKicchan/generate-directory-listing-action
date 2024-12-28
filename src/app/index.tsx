@@ -1,20 +1,14 @@
-import type { Path } from "glob";
-import type { ViewTypes } from "../utils/view-types";
-import { Contents } from "./contents";
+import { Contents, type P as ContentsProps } from "./contents";
 import { Footer } from "./footer";
-import { Header } from "./header";
+import { Header, type P as HeaderProps } from "./header";
 
-export interface P {
-	location: string;
-	files: Path[];
-	viewType: ViewTypes;
-}
+export type P = HeaderProps & ContentsProps;
 
-export function App({ location, files, viewType }: P) {
+export function App({ location, ...contentsProps }: P) {
 	return (
 		<>
 			<Header location={location} />
-			<Contents files={files} viewType={viewType} />
+			<Contents {...contentsProps} />
 			<Footer />
 		</>
 	);

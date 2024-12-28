@@ -10,8 +10,10 @@ export interface P {
 	inputs: ActionInputs;
 }
 
+const rootLocation = "/" as const;
+
 export async function HTML({ root, dir, files, inputs }: P) {
-	const location = dir.fullpath().substring(root.length) || "/";
+	const location = dir.fullpath().substring(root.length) || rootLocation;
 	const cssComponent = await CSS({ target: inputs.target, theme: inputs.theme });
 
 	return (
@@ -24,7 +26,7 @@ export async function HTML({ root, dir, files, inputs }: P) {
 				{cssComponent}
 			</head>
 			<body>
-				<App location={location} files={files} viewType={inputs.viewType} />
+				<App location={location} files={files} viewType={inputs.viewType} isRoot={location === rootLocation} />
 			</body>
 		</html>
 	);

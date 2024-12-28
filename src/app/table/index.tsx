@@ -6,10 +6,11 @@ import { getDirSize } from "../../utils/directories";
 
 export interface P {
 	files: Path[];
+	isRoot: boolean;
 }
 
-export function Table({ files }: P) {
-	const rows = files.map((path) => <TableRow key={path.name} path={path} />);
+export function Table({ files, isRoot }: P) {
+	const rows = files.map((path) => <FileRow key={path.name} path={path} />);
 	core.debug(`- Generated list: ${files.map((path) => path.name).join(", ")}`);
 	return (
 		<table>
@@ -20,26 +21,51 @@ export function Table({ files }: P) {
 					<th>Last Modified</th>
 				</tr>
 			</thead>
-			<tbody>{rows}</tbody>
+			<tbody>
+				{!isRoot && <TableRow href={"../"} name=".." dataAttr={{ "data-type": "parent" }} />}
+				{rows}
+			</tbody>
 		</table>
 	);
 }
 
-function TableRow({ path }: { path: Path }) {
+function FileRow({ path }: { path: Path }) {
 	const file = fs.statSync(path.fullpath());
 
 	const href = file.isDirectory() ? `${path.name}/` : path.name;
-	const ext = file.isDirectory() ? "dir" : path.name.split(".").pop();
+	const ext = file.isDirectory() ? "dir" : (path.name.split(".").pop() ?? "");
 
 	const size = file.isFile() ? file.size : file.isDirectory() ? getDirSize(path.fullpath()) : 0;
 
 	return (
-		<tr data-name={path.name} data-type={ext} data-testid={path.name}>
+		<TableRow
+			dataAttr={{
+				"data-type": ext,
+			}}
+			href={href}
+			name={path.name}
+			size={bytes(size) ?? "-"}
+			lastModified={file.mtime.toLocaleString()}
+		/>
+	);
+}
+
+interface TableRowProps {
+	href: string;
+	name: string;
+	size?: string;
+	lastModified?: string;
+	dataAttr?: Record<`data-${string}`, string>;
+}
+
+function TableRow({ href, name, size = "-", lastModified = "-", dataAttr = {} }: TableRowProps) {
+	return (
+		<tr data-name={name} {...dataAttr}>
 			<td>
-				<a href={href}>{path.name}</a>
+				<a href={href}>{name}</a>
 			</td>
-			<td>{bytes(size)}</td>
-			<td>{file.mtime.toLocaleString()}</td>
+			<td>{size}</td>
+			<td>{lastModified}</td>
 		</tr>
 	);
 }

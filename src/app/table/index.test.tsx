@@ -11,22 +11,26 @@ describe("Table", () => {
 		mockStatSync.mockClear();
 	});
 
-	const setup = ({ files }: P) => render(<Table files={files} />);
+	const setup = ({ files = [], isRoot = true }: Partial<P> = {}, stats: Partial<fs.Stats> = {}) => {
+		mockStatSync.mockReturnValue({
+			isFile: () => true,
+			isDirectory: () => false,
+			size: 1024,
+			mtime: new Date("2000-01-01 00:00:00"),
+			...stats,
+		} as fs.Stats);
+
+		return render(<Table files={files} isRoot={isRoot} />);
+	};
 
 	describe("アイテムがファイルの時", () => {
 		beforeEach(() => {
-			mockStatSync.mockReturnValue({
-				isFile: () => true,
-				isDirectory: () => false,
-				size: 1024,
-				mtime: new Date("2000-01-01 00:00:00"),
-			} as fs.Stats);
-
 			const files = [
 				{ name: "file1.txt", fullpath: () => "file1.txt" },
 				{ name: "file2.png", fullpath: () => "file2.png" },
 			] as Path[];
-			const screen = setup({ files });
+
+			setup({ files });
 		});
 
 		it("table が表示される", () => {
@@ -68,18 +72,33 @@ describe("Table", () => {
 	});
 
 	it("アイテムがディレクトリのとき、href と type がディレクトリ用になる", () => {
-		mockStatSync.mockReturnValue({
-			isFile: () => false,
-			isDirectory: () => true,
-			size: 1024,
-			mtime: new Date("2000-01-01"),
-		} as fs.Stats);
-
-		const paths = [{ name: "dir", fullpath: () => "dir" }] as Path[];
-		const { getAllByRole } = setup({ files: paths });
+		const files = [{ name: "dir", fullpath: () => "dir" }] as Path[];
+		const { getAllByRole } = setup(
+			{ files },
+			{
+				isFile: () => false,
+				isDirectory: () => true,
+			},
+		);
 
 		const dir = getAllByRole("row")[1];
 		expect(dir).toHaveAttribute("data-type", "dir");
 		expect(within(dir).getByRole("link")).toHaveAttribute("href", "dir/");
+	});
+
+	it("isRoot が true のとき、親ディレクトリへのリンクが表示されない", () => {
+		const { getAllByRole } = setup({ isRoot: true });
+
+		const rows = getAllByRole("row");
+		// header only
+		expect(rows).toHaveLength(1);
+	});
+
+	it("isRoot が false のとき、親ディレクトリへのリンクが表示される", () => {
+		const { getAllByRole } = setup({ isRoot: false });
+
+		const parent = getAllByRole("row")[1];
+		expect(parent).toHaveAttribute("data-type", "parent");
+		expect(within(parent).getByRole("link")).toHaveAttribute("href", "../");
 	});
 });
