@@ -1,0 +1,14 @@
+name: Setup
+description: "Setup Node.js"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: .node-version
+        cache: "npm"
+    - name: Install dependencies
+      shell: bash
+      run: npm ci

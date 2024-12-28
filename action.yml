@@ -3,7 +3,7 @@ description: 'Generate index.html files for directory listing.'
 author: 'yKicchan'
 
 branding:
-  icon: 'heart'
+  icon: 'file-plus'
   color: 'red'
 
 runs:
@@ -18,7 +18,7 @@ inputs:
     description: |
       Pattern to ignore files or directories.
       Multiple patterns can be separated by commas.
-      ex. `node_modules, **/*.log`
+      ex. `**/node_modules, **/*.log`
     required: false
   showHiddenFiles:
     description: 'Show hidden files in the directory listing.'

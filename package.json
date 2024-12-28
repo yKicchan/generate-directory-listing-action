@@ -40,7 +40,6 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
-		"@github/local-action": "^2.2.1",
 		"@preact/preset-vite": "^2.9.3",
 		"@testing-library/jest-dom": "^6.6.3",
 		"@testing-library/preact": "^3.2.4",
