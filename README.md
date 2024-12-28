@@ -1,14 +1,26 @@
 Lang: [🇺🇸](./README.md) [🇯🇵](./README.ja.md)
 
-[![license](https://img.shields.io/github/license/yKicchan/generate-directory-listing-action)](https://github.com/yKicchan/generate-directory-listing-action/blob/master/LICENSE)
+[![license](https://img.shields.io/github/license/yKicchan/generate-directory-listing-action)](https://github.com/yKicchan/generate-directory-listing-action/blob/main/LICENSE)
 [![CI](https://github.com/yKicchan/generate-directory-listing-action/actions/workflows/ci.yml/badge.svg)](https://github.com/yKicchan/generate-directory-listing-action/actions/workflows/ci.yml)
 [![Deploy](https://github.com/yKicchan/generate-directory-listing-action/actions/workflows/deploy.yml/badge.svg)](https://github.com/yKicchan/generate-directory-listing-action/actions/workflows/deploy.yml)
 [![Coverage](https://ykicchan.github.io/generate-directory-listing-action/coverage/badge.svg)](https://ykicchan.github.io/generate-directory-listing-action/coverage)
 
 # Generate Directory Listing Action
 
-This Action generates an `index.html` by exploring the specified directory.  
-It is useful for browsing static pages hosted on platforms like GitHub Pages.
+This Action generates an index.html that can explore the specified directory.  
+It is useful for viewing static pages, such as those published on GitHub Pages.
+
+## Demo
+
+Here is a preview of the index.html generated using this Action.  
+For religious reasons, it also supports Dark mode.
+
+| Light Theme | Dark Theme |
+| --- | --- |
+| ![Light Theme Demo](https://github.com/user-attachments/assets/12db5a6a-4b25-45dd-aab6-eac3163e4d10) | ![Dark Theme Demo](https://github.com/user-attachments/assets/db7691a9-8e37-47ac-920f-aa0b4e634b99) |
+
+The actual demo page generated with this Action is available on GitHub Pages:  
+https://ykicchan.github.io/generate-directory-listing-action/
 
 ## Usage
 
@@ -25,22 +37,15 @@ The simplest way to use this Action is to invoke it and specify the target direc
 
 By using the ignore option, you can exclude files that match specific patterns.
 
+> [!tip]
+> To specify multiple patterns, separate them with commas.
+
 ```yml
 - name: Generate Directory listing
   uses: yKicchan/generate-directory-listing-action@v1
   with:
     target: dist
     ignore: "**/*.map"
-```
-
-To specify multiple patterns, separate them with commas.
-
-```yml
-- name: Generate Directory listing
-  uses: yKicchan/generate-directory-listing-action@v1
-  with:
-    target: dist
-    ignore: "**/*.map, **/secret"
 ```
 
 ### Customize Appearance

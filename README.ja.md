@@ -1,6 +1,6 @@
 Lang: [🇺🇸](./README.md) [🇯🇵](./README.ja.md)
 
-[![license](https://img.shields.io/github/license/yKicchan/generate-directory-listing-action)](https://github.com/yKicchan/generate-directory-listing-action/blob/master/LICENSE)
+[![license](https://img.shields.io/github/license/yKicchan/generate-directory-listing-action)](https://github.com/yKicchan/generate-directory-listing-action/blob/main/LICENSE)
 [![CI](https://github.com/yKicchan/generate-directory-listing-action/actions/workflows/ci.yml/badge.svg)](https://github.com/yKicchan/generate-directory-listing-action/actions/workflows/ci.yml)
 [![Deploy](https://github.com/yKicchan/generate-directory-listing-action/actions/workflows/deploy.yml/badge.svg)](https://github.com/yKicchan/generate-directory-listing-action/actions/workflows/deploy.yml)
 [![Coverage](https://ykicchan.github.io/generate-directory-listing-action/coverage/badge.svg)](https://ykicchan.github.io/generate-directory-listing-action/coverage)
@@ -8,7 +8,19 @@ Lang: [🇺🇸](./README.md) [🇯🇵](./README.ja.md)
 # Generate Directory Listing Action
 
 この Action は指定のディレクトリ下を探索できる `index.html` を生成します。  
-GitHub Pages などで公開する静的なページのブラウジングに便利です。
+GitHub Pages などで公開する静的なページの閲覧に便利です。
+
+## デモ
+
+以下はこの Action を使って生成した `index.html` の表示イメージです。  
+宗教上の理由で Dark mode にも対応しています。
+
+| Light Theme | Dark Theme |
+| --- | --- |
+| ![Light Theme Demo](https://github.com/user-attachments/assets/12db5a6a-4b25-45dd-aab6-eac3163e4d10) | ![Dark Theme Demo](https://github.com/user-attachments/assets/db7691a9-8e37-47ac-920f-aa0b4e634b99) |
+
+この Action を使って生成した実際のデモページは GitHub Pages で公開しています。
+https://ykicchan.github.io/generate-directory-listing-action/
 
 ## 使い方
 
@@ -25,22 +37,15 @@ GitHub Pages などで公開する静的なページのブラウジングに便�
 
 `ignore` オプションを利用することで、特定のパターンにマッチするファイルを除外することができます。
 
+> [!tip]
+> 複数のパターンを指定したい場合は、カンマ区切りで指定します。
+
 ```yml
 - name: Generate Directory listing
   uses: yKicchan/generate-directory-listing-action@v1
   with:
     target: dist
     ignore: "**/*.map"
-```
-
-複数のパターンを指定したい場合は、カンマ区切りで指定します。
-
-```yml
-- name: Generate Directory listing
-  uses: yKicchan/generate-directory-listing-action@v1
-  with:
-    target: dist
-    ignore: "**/*.map, **/secret"
 ```
 
 ### 見た目をカスタマイズする
