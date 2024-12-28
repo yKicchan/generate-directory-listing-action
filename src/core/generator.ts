@@ -10,11 +10,12 @@ import { truncate } from "../utils/truncate";
 import { HTML } from "./html";
 
 export async function generate(root: string, dir: Path, inputs: ActionInputs) {
-	const files = await glob(`${dir.fullpath()}/*`, {
-		ignore: inputs.ignore,
+	const files = await glob(join(dir.fullpath(), "*"), {
+		ignore: inputs.ignore.map((i) => join(root, i)),
 		dot: inputs.showHiddenFiles,
 		withFileTypes: true,
 	});
+
 	if (files.length === 0) {
 		core.debug(color.yellow(`[Skip] No targets found in: ${dir.fullpath()}`));
 		return;

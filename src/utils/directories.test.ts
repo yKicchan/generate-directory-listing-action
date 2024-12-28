@@ -10,9 +10,9 @@ describe("getDirectories", () => {
 		expect(result.directories).toHaveLength(5);
 	});
 
-	it("ignore で指定したディレクトリを除外できる", async () => {
-		const result = await getDirectories("sandbox", ["**/path/to"]);
-		expect(result.directories).toHaveLength(4);
+	it("ignore で指定したディレクトリ以下を除外できる", async () => {
+		const result = await getDirectories("sandbox", ["path"]);
+		expect(result.directories).toHaveLength(3);
 	});
 
 	it("target が存在しない場合は空が返る", async () => {
