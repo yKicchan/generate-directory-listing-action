@@ -5,7 +5,9 @@ export interface P {
 export function Header({ location }: P) {
 	return (
 		<header>
-			<h1>Index of {location}</h1>
+			<h1>
+				Index of <span>{location}</span>
+			</h1>
 		</header>
 	);
 }
