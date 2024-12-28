@@ -1,4 +1,4 @@
-import { getByRole, render } from "@testing-library/preact";
+import { render } from "@testing-library/preact";
 import { Footer } from "./index";
 
 describe("Footer", () => {

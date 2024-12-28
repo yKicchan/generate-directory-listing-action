@@ -102,12 +102,37 @@ footer {
 	font-size: .875rem;
 	color: var(--gray);
 
-	a {
-		color: var(--gray);
+	p {
+		display: flex;
+		align-items: center;
+		gap: .5em;
 
-		&:visited {
-			color: light-dark(#bbb, #666);
+		a {
+			display: inline-flex;
+			align-items: center;
+			gap: .2em;
+			color: var(--gray);
+
+			&:visited {
+				color: light-dark(#bbb, #666);
+			}
+
+			img {
+				width: 1em;
+				height: 1em;
+			}
 		}
 	}
 }
 
+@media (prefers-color-scheme: dark) {
+	img[data-scheme="light"] {
+		display: none;
+	}
+}
+
+@media (prefers-color-scheme: light) {
+	img[data-scheme="dark"] {
+		display: none;
+	}
+}
