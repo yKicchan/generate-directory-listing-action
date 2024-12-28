@@ -18,7 +18,7 @@ jobs:
       - name: Setup Node.js
         uses: ./.github/actions/setup
       - name: Build
-        run: npm run build
+        uses: ./.github/actions/build
       - name: Run test & Generate coverage report
         run: npm run coverage
       - name: Make coverage badge

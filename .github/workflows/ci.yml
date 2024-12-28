@@ -31,7 +31,7 @@ jobs:
       - name: Setup Node.js
         uses: ./.github/actions/setup
       - name: Build
-        run: npm run build
+        uses: ./.github/actions/build
       - name: Test Local Action
         uses: ./
         with:
