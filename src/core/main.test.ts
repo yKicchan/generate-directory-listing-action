@@ -28,7 +28,7 @@ describe("run", () => {
 	});
 
 	it("ディレクトリの数だけ generate が呼ばれる", async () => {
-		setup({ target: "test" });
+		setup({ target: "sandbox" });
 		await run();
 		expect(mockGenerate).toHaveBeenCalledTimes(5);
 	});

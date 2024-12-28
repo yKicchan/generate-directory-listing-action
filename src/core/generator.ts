@@ -25,7 +25,8 @@ export async function generate(root: string, dir: Path, inputs: ActionInputs) {
 	core.debug(color.cyan(`Generating index for: ${dir.fullpath()}`));
 	core.debug(`- Found ${files.length} target(s).`);
 
-	const html = `<!DOCTYPE html>${renderToString(HTML({ root, dir, files, inputs }))}`;
+	const htmlComponent = await HTML({ root, dir, files, inputs });
+	const html = `<!DOCTYPE html>${renderToString(htmlComponent)}`;
 
 	await fs.writeFile(join(dir.fullpath(), "index.html"), html, "utf-8");
 	core.info(color.blue(`Generated index for: ${dir.fullpath()}`));

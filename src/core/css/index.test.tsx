@@ -1,29 +1,31 @@
 import { render } from "@testing-library/preact";
 import { describe, expect } from "vitest";
-import { CSS } from "../css";
-import "./index.css";
+import { CSS } from "./index";
 
-vi.mock("./index.css", () => ({
-	default: "css",
+vi.mock("../../assets/global.pcss", () => ({
+	default: 'html{content:"base"}',
 }));
 
 describe("CSS", () => {
-	const setup = (target = "", theme = "") => render(<CSS target={target} theme={theme} />);
+	const setup = async (target = "", theme = "") => {
+		const cssComponent = await CSS({ target, theme });
+		return render(cssComponent);
+	};
 
 	it("theme がないとき、デフォルトの css のみレンダリングされる", async () => {
-		const { container } = setup();
+		const { container } = await setup();
 		console.log(container.innerHTML);
-		expect(container.innerHTML).toBe("<style>css</style>");
+		expect(container.innerHTML).toBe('<style>html{content:"base"}</style>');
 	});
 
 	it("theme があるとき、theme の css が追加される", async () => {
-		const { container } = setup("src", "../test/theme.txt");
-		expect(container.innerHTML).toBe("<style>css</style><style>theme</style>");
+		const { container } = await setup("src", "../sandbox/theme.css");
+		expect(container.innerHTML).toBe('<style>html{content:"base"}</style><style>html{content:"theme"}</style>');
 	});
 
 	it("無効な theme が指定されたとき、無視してデフォルトの css のみレンダリングされる", async () => {
-		const { container } = setup("src", "unknown.txt");
+		const { container } = await setup("src", "unknown.css");
 		console.log(container.innerHTML);
-		expect(container.innerHTML).toBe("<style>css</style>");
+		expect(container.innerHTML).toBe('<style>html{content:"base"}</style>');
 	});
 });

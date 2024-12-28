@@ -6,12 +6,12 @@ import { getDirSize, getDirectories } from "./directories";
 
 describe("getDirectories", () => {
 	it("target を含めた配下のディレクトリ一覧が取得できる", async () => {
-		const result = await getDirectories("test", []);
+		const result = await getDirectories("sandbox", []);
 		expect(result.directories).toHaveLength(5);
 	});
 
 	it("ignore で指定したディレクトリを除外できる", async () => {
-		const result = await getDirectories("test", ["**/path/to"]);
+		const result = await getDirectories("sandbox", ["**/path/to"]);
 		expect(result.directories).toHaveLength(4);
 	});
 
@@ -21,8 +21,8 @@ describe("getDirectories", () => {
 	});
 
 	it("target のパスが root で返る", async () => {
-		const result = await getDirectories("test", []);
-		expect(result.root).toBe(join(process.cwd(), "test"));
+		const result = await getDirectories("sandbox", []);
+		expect(result.root).toBe(join(process.cwd(), "sandbox"));
 	});
 });
 
@@ -33,12 +33,12 @@ describe("getDirSize", () => {
 	beforeEach(() => {
 		mockGlobSync.mockClear();
 		mockStatSync.mockClear();
-		mockGlobSync.mockReturnValue(["test/file1.txt", "test/file2.txt"]);
+		mockGlobSync.mockReturnValue(["sandbox/file1.txt", "sandbox/file2.txt"]);
 		mockStatSync.mockReturnValue({ size: 1024 } as fs.Stats);
 	});
 
 	it("ディレクトリ配下のファイルサイズの合計が取得できる", () => {
-		const size = getDirSize("test");
+		const size = getDirSize("sandbox");
 		expect(size).toBe(2048);
 	});
 });

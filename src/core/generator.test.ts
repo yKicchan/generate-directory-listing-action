@@ -25,44 +25,44 @@ describe("generate", () => {
 	});
 
 	it("index.htmlがあるとき、何もしない", async () => {
-		const dir = { fullpath: () => "test/html" } as Path;
+		const dir = { fullpath: () => "sandbox/html" } as Path;
 		const inputs = {} as ActionInputs;
 		await generate("", dir, inputs);
 		expect(mockWriteFile).not.toHaveBeenCalled();
 	});
 
 	it("index.htmlを生成する", async () => {
-		const dir = { fullpath: () => "test" } as Path;
+		const dir = { fullpath: () => "sandbox" } as Path;
 		const inputs = {} as ActionInputs;
 		await generate("", dir, inputs);
-		expect(mockWriteFile).toHaveBeenCalledWith("test/index.html", "<!DOCTYPE html>html", "utf-8");
+		expect(mockWriteFile).toHaveBeenCalledWith("sandbox/index.html", "<!DOCTYPE html>html", "utf-8");
 	});
 
 	it("override が true のとき、すでに存在していても index.html を生成する", async () => {
-		const dir = { fullpath: () => "test/html" } as Path;
+		const dir = { fullpath: () => "sandbox/html" } as Path;
 		const inputs = { override: true } as ActionInputs;
 		await generate("", dir, inputs);
-		expect(mockWriteFile).toHaveBeenCalledWith("test/html/index.html", "<!DOCTYPE html>html", "utf-8");
+		expect(mockWriteFile).toHaveBeenCalledWith("sandbox/html/index.html", "<!DOCTYPE html>html", "utf-8");
 	});
 
 	it("ignore が設定されているとき、対象外のファイルを無視する", async () => {
-		const dir = { fullpath: () => "test/path" } as Path;
+		const dir = { fullpath: () => "sandbox/path" } as Path;
 		const inputs = { ignore: ["**/ignore", "**/to"] } as ActionInputs;
 		await generate("", dir, inputs);
 		expect(mockWriteFile).not.toHaveBeenCalled();
 	});
 
 	it("showHiddenFiles が false のとき、隠しファイルを無視する", async () => {
-		const dir = { fullpath: () => "test/hidden" } as Path;
+		const dir = { fullpath: () => "sandbox/hidden" } as Path;
 		const inputs = { showHiddenFiles: false } as ActionInputs;
 		await generate("", dir, inputs);
 		expect(mockWriteFile).not.toHaveBeenCalled();
 	});
 
 	it("showHiddenFiles が true のとき、隠しファイルを表示する", async () => {
-		const dir = { fullpath: () => "test/hidden" } as Path;
+		const dir = { fullpath: () => "sandbox/hidden" } as Path;
 		const inputs = { showHiddenFiles: true } as ActionInputs;
 		await generate("", dir, inputs);
-		expect(mockWriteFile).toHaveBeenCalledWith("test/hidden/index.html", "<!DOCTYPE html>html", "utf-8");
+		expect(mockWriteFile).toHaveBeenCalledWith("sandbox/hidden/index.html", "<!DOCTYPE html>html", "utf-8");
 	});
 });

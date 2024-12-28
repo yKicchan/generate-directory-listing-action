@@ -1,0 +1,78 @@
+:root {
+	color-scheme: light dark;
+	--black: #111;
+	--white: #eee;
+	--gray: #7f7f7f;
+	--primary-text: light-dark(var(--black), var(--white));
+	--secondary-text: light-dark(#444, #bbb);
+	--border: light-dark(#bbb, #444);
+	--hover-bg: light-dark(#7f7f7f0D, #eeeeee0D);
+}
+
+body {
+	padding: 2rem 2rem 1.25rem;
+	min-width: 100vw;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	background-color: light-dark(var(--white), var(--black));
+	color: var(--primary-text);
+	font-size: 16px;
+	font-family:
+		ui-sans-serif, system-ui, sans-serif, Apple Color Emoji,
+		Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+}
+
+@media screen and (max-width: 480px) {
+	body {
+		font-size: 14px;
+	}
+}
+
+header {
+	margin-bottom: 1.25rem;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+
+	th,
+	td {
+		padding: 1.25rem 1rem;
+		text-align: left;
+		border-bottom: 1px solid var(--border);
+	}
+
+	th {
+		color: var(--secondary-text);
+	}
+
+	tbody > tr:hover {
+		background-color: var(--hover-bg);
+	}
+
+	tbody > tr:last-child > td {
+		border-bottom: none;
+	}
+}
+
+footer {
+	margin: auto auto 0;
+	padding-top: 1rem;
+	font-size: .875rem;
+	color: var(--gray);
+
+	a {
+		color: var(--gray);
+
+		&:hover {
+			opacity: 0.7;
+			transition: opacity .2s linear;
+		}
+		&:visited {
+			color: light-dark(#bbb, #666);
+		}
+	}
+}
+

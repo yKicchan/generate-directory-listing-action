@@ -10,15 +10,18 @@ export interface P {
 	inputs: ActionInputs;
 }
 
-export function HTML({ root, dir, files, inputs }: P) {
+export async function HTML({ root, dir, files, inputs }: P) {
 	const location = dir.fullpath().substring(root.length) || "/";
+	const cssComponent = await CSS({ target: inputs.target, theme: inputs.theme });
+
 	return (
 		<html lang="en">
 			<head>
 				<meta charset="UTF-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 				<title>Index of {location}</title>
-				<CSS target={inputs.target} theme={inputs.theme} />
+				<link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css" />
+				{cssComponent}
 			</head>
 			<body>
 				<App location={location} files={files} viewType={inputs.viewType} />
