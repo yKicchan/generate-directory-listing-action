@@ -1,5 +1,6 @@
 Lang: [🇺🇸](./README.md) [🇯🇵](./README.ja.md)
 
+[![GitHub Release](https://img.shields.io/github/v/release/yKicchan/generate-directory-listing-action)](https://github.com/yKicchan/generate-directory-listing-action/releases)
 [![license](https://img.shields.io/github/license/yKicchan/generate-directory-listing-action)](https://github.com/yKicchan/generate-directory-listing-action/blob/main/LICENSE)
 [![CI](https://github.com/yKicchan/generate-directory-listing-action/actions/workflows/ci.yml/badge.svg)](https://github.com/yKicchan/generate-directory-listing-action/actions/workflows/ci.yml)
 [![Deploy](https://github.com/yKicchan/generate-directory-listing-action/actions/workflows/deploy.yml/badge.svg)](https://github.com/yKicchan/generate-directory-listing-action/actions/workflows/deploy.yml)
@@ -52,9 +53,14 @@ https://ykicchan.github.io/generate-directory-listing-action/
 
 追加の CSS を読み込ませて、出力する `index.html` の見た目をカスタマイズすることができます。
 
+> [!warning]
+> カスタマイズした見た目を確実に反映するには、利用バージョンを完全に固定してください。  
+> 例: `uses: yKicchan/generate-directory-listing-action@v1.0.0`  
+> バージョンアップにより HTML 構造が変わる可能性があります。
+
 ```yml
 - name: Generate Directory listing
-  uses: yKicchan/generate-directory-listing-action@v1
+  uses: yKicchan/generate-directory-listing-action@v1.0
   with:
     target: dist
     # target ディレクトリからの相対パスを指定します

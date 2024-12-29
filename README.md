@@ -1,5 +1,6 @@
 Lang: [🇺🇸](./README.md) [🇯🇵](./README.ja.md)
 
+[![GitHub Release](https://img.shields.io/github/v/release/yKicchan/generate-directory-listing-action)](https://github.com/yKicchan/generate-directory-listing-action/releases)
 [![license](https://img.shields.io/github/license/yKicchan/generate-directory-listing-action)](https://github.com/yKicchan/generate-directory-listing-action/blob/main/LICENSE)
 [![CI](https://github.com/yKicchan/generate-directory-listing-action/actions/workflows/ci.yml/badge.svg)](https://github.com/yKicchan/generate-directory-listing-action/actions/workflows/ci.yml)
 [![Deploy](https://github.com/yKicchan/generate-directory-listing-action/actions/workflows/deploy.yml/badge.svg)](https://github.com/yKicchan/generate-directory-listing-action/actions/workflows/deploy.yml)
@@ -7,12 +8,12 @@ Lang: [🇺🇸](./README.md) [🇯🇵](./README.ja.md)
 
 # Generate Directory Listing Action
 
-This Action generates an index.html that can explore the specified directory.  
+This Action generates an `index.html` that can explore the specified directory.  
 It is useful for viewing static pages, such as those published on GitHub Pages.
 
 ## Demo
 
-Here is a preview of the index.html generated using this Action.  
+Here is a preview of the `index.html` generated using this Action.  
 For religious reasons, it also supports Dark mode.
 
 | Light Theme | Dark Theme |
@@ -35,7 +36,7 @@ The simplest way to use this Action is to invoke it and specify the target direc
 
 ### Exclude Specific Files
 
-By using the ignore option, you can exclude files that match specific patterns.
+By using the `ignore` option, you can exclude files that match specific patterns.
 
 > [!tip]
 > To specify multiple patterns, separate them with commas.
@@ -50,7 +51,12 @@ By using the ignore option, you can exclude files that match specific patterns.
 
 ### Customize Appearance
 
-You can load additional CSS to customize the appearance of the generated index.html.
+You can load additional CSS to customize the appearance of the generated `index.html`.
+
+> [!warning]
+> To ensure your customizations are applied correctly, please pin the version completely.  
+> Example: `uses: yKicchan/generate-directory-listing-action@v1.0.0`  
+> The HTML structure may change with version updates.
 
 ```yml
 - name: Generate Directory listing
