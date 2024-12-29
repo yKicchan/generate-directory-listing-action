@@ -1,4 +1,4 @@
-Lang: [🇺🇸](./README.md) [🇯🇵](./README.ja.md)
+Language: [🇺🇸](./README.md) [🇯🇵](./README.ja.md)
 
 [![GitHub Release](https://img.shields.io/github/v/release/yKicchan/generate-directory-listing-action)](https://github.com/yKicchan/generate-directory-listing-action/releases)
 [![license](https://img.shields.io/github/license/yKicchan/generate-directory-listing-action)](https://github.com/yKicchan/generate-directory-listing-action/blob/main/LICENSE)
@@ -32,6 +32,24 @@ https://ykicchan.github.io/generate-directory-listing-action/
   uses: yKicchan/generate-directory-listing-action@v1
   with:
     target: dist
+```
+
+### バージョンの指定について
+
+この Action は、セマンティックバージョニングを採用しています。  
+[セキュリティ上の観点](https://docs.github.com/ja/actions/security-for-github-actions/security-guides/security-hardening-for-github-actions)から、コミットハッシュによる固定が最も推奨されます。  
+もしアップデートを受け取りたい場合は、メジャーバージョンまたはマイナーバージョンの指定も可能です。
+
+```yml
+# バージョンは完全に固定し、アップデートを受け取らない
+uses: yKicchan/generate-directory-listing-action@COMMIT_SHA
+uses: yKicchan/generate-directory-listing-action@v1.0.0
+
+# マイナーバージョンで固定し、パッチバージョンのアップデートのみを受け取る
+uses: yKicchan/generate-directory-listing-action@v1.0
+
+# メジャーバージョンで固定し、互換性のあるアップデートを受け取る
+uses: yKicchan/generate-directory-listing-action@v1
 ```
 
 ### 特定のファイルを除外する

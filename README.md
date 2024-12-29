@@ -1,4 +1,4 @@
-Lang: [🇺🇸](./README.md) [🇯🇵](./README.ja.md)
+Language: [🇺🇸](./README.md) [🇯🇵](./README.ja.md)
 
 [![GitHub Release](https://img.shields.io/github/v/release/yKicchan/generate-directory-listing-action)](https://github.com/yKicchan/generate-directory-listing-action/releases)
 [![license](https://img.shields.io/github/license/yKicchan/generate-directory-listing-action)](https://github.com/yKicchan/generate-directory-listing-action/blob/main/LICENSE)
@@ -32,6 +32,25 @@ The simplest way to use this Action is to invoke it and specify the target direc
   uses: yKicchan/generate-directory-listing-action@v1
   with:
     target: dist
+```
+
+### Specifying the Version
+
+This Action follows semantic versioning.  
+From a [security perspective](https://docs.github.com/en/actions/security-for-github-actions/security-guides/security-hardening-for-github-actions), pinning the version using a commit hash is highly recommended.  
+If you want to receive updates, you can specify either the major or minor version.  
+
+```yml
+# Fully pin the version to avoid updates
+uses: yKicchan/generate-directory-listing-action@COMMIT_SHA
+uses: yKicchan/generate-directory-listing-action@v1.0.0
+
+# Pin the minor version to receive patch updates only
+uses: yKicchan/generate-directory-listing-action@v1.0
+
+# Pin the major version to receive compatible updates
+uses: yKicchan/generate-directory-listing-action@v1
+
 ```
 
 ### Exclude Specific Files
