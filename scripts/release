@@ -16,6 +16,7 @@ set -e
 semver_tag_regex='v[0-9]+\.[0-9]+\.[0-9]+$'
 semver_tag_glob='v[0-9].[0-9].[0-9]*'
 git_remote='origin'
+git_base_branch='main'
 major_semver_tag_regex='\(v[0-9]*\)'
 minor_semver_tag_regex='\(v[0-9]*\.[0-9]*\)'
 
@@ -67,7 +68,7 @@ fi
 # 5. Build the project & Commit dist folder
 echo -e "${GRAY}[debug] 5. Build the project & Commit dist folder${OFF}"
 release_branch="releases/$new_tag"
-git switch -c "$release_branch" main
+git switch -c "$release_branch" "$git_base_branch"
 npm run build
 sed -i '' '/dist\//d' .gitignore
 git add .gitignore
@@ -79,7 +80,6 @@ echo -e "${GRAY}[debug] 6. Tag a new release${OFF}"
 git tag "$new_tag" --annotate --message "$new_tag Release"
 echo -e "Tagged: ${BOLD_GREEN}$new_tag${OFF}"
 
-
 # 7. Point separate version release tag (e.g. v1, v1.1) to the new release
 echo -e "${GRAY}[debug] 7. Point separate version release tag (e.g. v1, v1.1) to the new release${OFF}"
 latest_major_release_tag=$(expr "$latest_tag" : "$major_semver_tag_regex")
@@ -87,26 +87,16 @@ new_major_release_tag=$(expr "$new_tag" : "$major_semver_tag_regex")
 latest_minor_release_tag=$(expr "$latest_tag" : "$minor_semver_tag_regex")
 new_minor_release_tag=$(expr "$new_tag" : "$minor_semver_tag_regex")
 
-if ! [[ "$new_major_release_tag" = "$latest_major_release_tag" ]]; then
-	is_major_release='yes'
-else
-	is_major_release='no'
-fi
-
 if ! [[ "$new_minor_release_tag" = "$latest_minor_release_tag" ]]; then
   is_minor_release='yes'
 else
   is_minor_release='no'
 fi
 
-if [ $is_major_release = 'yes' ]; then
-	# Create a new major version tag and point it to this release
-	git tag "$new_major_release_tag" --annotate --message "$new_major_release_tag Release"
-	echo -e "New major version tag: ${BOLD_GREEN}$new_major_release_tag${OFF}"
+if ! [[ "$new_major_release_tag" = "$latest_major_release_tag" ]]; then
+	is_major_release='yes'
 else
-	# Update the major version tag to point it to this release
-	git tag "$latest_major_release_tag" --force --annotate --message "Sync $latest_major_release_tag tag with $new_tag"
-	echo -e "Synced ${BOLD_GREEN}$latest_major_release_tag${OFF} with ${BOLD_GREEN}$new_tag${OFF}"
+	is_major_release='no'
 fi
 
 if [ $is_minor_release = 'yes' ]; then
@@ -119,12 +109,24 @@ else
   echo -e "Synced ${BOLD_GREEN}$latest_minor_release_tag${OFF} with ${BOLD_GREEN}$new_tag${OFF}"
 fi
 
+if [ $is_major_release = 'yes' ]; then
+	# Create a new major version tag and point it to this release
+	git tag "$new_major_release_tag" --annotate --message "$new_major_release_tag Release"
+	echo -e "New major version tag: ${BOLD_GREEN}$new_major_release_tag${OFF}"
+else
+	# Update the major version tag to point it to this release
+	git tag "$latest_major_release_tag" --force --annotate --message "Sync $latest_major_release_tag tag with $new_tag"
+	echo -e "Synced ${BOLD_GREEN}$latest_major_release_tag${OFF} with ${BOLD_GREEN}$new_tag${OFF}"
+fi
+
 # 8. Push the new tags to remote
 echo -e "${GRAY}[debug] 8. Push the new tags to remote${OFF}"
 git push $git_remote "$new_tag"
-git push -f $git_remote "$new_major_release_tag"
 git push -f $git_remote "$new_minor_release_tag"
-echo -e "Tags: ${BOLD_GREEN}$new_tag${OFF}, ${BOLD_GREEN}$new_major_release_tag${OFF}, and ${BOLD_GREEN}$new_minor_release_tag${OFF} pushed to remote"
+git push -f $git_remote "$new_major_release_tag"
+echo -e "Tags: ${BOLD_GREEN}$new_tag${OFF}, ${BOLD_GREEN}$new_minor_release_tag${OFF}, ${BOLD_GREEN}$new_major_release_tag${OFF} pushed to remote"
 
 # Completed
+git switch "$git_base_branch"
+git branch -D "$release_branch"
 echo -e "${BOLD_GREEN}Done!${OFF}"
