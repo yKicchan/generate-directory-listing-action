@@ -3,11 +3,10 @@ import { join } from "node:path";
 import * as core from "@actions/core";
 import bytes from "bytes";
 import { type Path, glob } from "glob";
-import { renderToString } from "preact-render-to-string";
 import type { ActionInputs } from "src/utils/inputs";
 import color from "../utils/color";
 import { truncate } from "../utils/truncate";
-import { HTML } from "./html";
+import { renderHTML } from "./html";
 
 export async function generate(root: string, dir: Path, inputs: ActionInputs) {
 	const files = await glob(join(dir.fullpath(), "*"), {
@@ -28,9 +27,7 @@ export async function generate(root: string, dir: Path, inputs: ActionInputs) {
 	core.debug(color.green("Generating 'index.html' at: ") + color.blue(dir.fullpath()));
 	core.debug(`- Found ${files.length} target(s).`);
 
-	const htmlComponent = await HTML({ root, dir, files, inputs });
-	const html = `<!DOCTYPE html>${renderToString(htmlComponent)}`;
-
+	const html = await renderHTML({ root, dir, files, inputs });
 	await fs.writeFile(join(dir.fullpath(), "index.html"), html, "utf-8");
 	core.info(color.green(`Successfully generated 'index.html' at: `) + color.blue(dir.fullpath()));
 	core.info(`- File size: ${bytes(html.length)}`);

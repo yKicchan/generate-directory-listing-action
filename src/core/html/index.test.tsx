@@ -1,15 +1,28 @@
 import { render } from "@testing-library/preact";
 import type { Path } from "glob";
-import { expect } from "vitest";
+import { describe, expect } from "vitest";
 import type { ActionInputs } from "../../utils/inputs";
-import { HTML, type P } from "./index";
+import * as module from "./index";
 
-vi.mock("../css", () => ({ CSS: () => "css" }));
-vi.mock("../../components/list", () => ({ List: () => "list" }));
+describe("renderHTML", () => {
+	vi.mock("preact-render-to-string", () => ({ renderToString: () => "html" }));
 
-describe("generateHtml", () => {
-	const setup = async ({ root, dir, files, inputs }: Partial<P> = {}) => {
-		const htmlComponent = await HTML({
+	it("HTML が返される", async () => {
+		const html = await module.renderHTML({
+			root: "",
+			dir: { fullpath: () => "" } as Path,
+			files: [],
+			inputs: {} as ActionInputs,
+		});
+		expect(html).toBe("<!DOCTYPE html>html");
+	});
+});
+
+describe("HTML", () => {
+	vi.mock("../css", () => ({ CSS: () => "css" }));
+	vi.mock("../../components/list", () => ({ List: () => "list" }));
+	const setup = async ({ root, dir, files, inputs }: Partial<module.P> = {}) => {
+		const htmlComponent = await module.HTML({
 			root: root ?? "",
 			dir: dir ?? ({ fullpath: () => "" } as Path),
 			files: files ?? [],

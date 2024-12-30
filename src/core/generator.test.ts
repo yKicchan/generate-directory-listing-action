@@ -4,8 +4,8 @@ import type { ActionInputs } from "src/utils/inputs";
 import { afterEach, beforeEach, expect } from "vitest";
 import { generate } from "./generator";
 
-vi.mock("preact-render-to-string", () => ({
-	renderToString: vi.fn().mockReturnValue("html"),
+vi.mock("./html", () => ({
+	renderHTML: vi.fn().mockReturnValue("html"),
 }));
 const mockWriteFile = vi.spyOn(promises, "writeFile");
 
@@ -35,14 +35,14 @@ describe("generate", () => {
 	it("ディレクトリ内にファイル(またはディレクトリ)が1つ以上あるとき index.html を生成する", async () => {
 		const dir = { fullpath: () => "sandbox" } as Path;
 		await setup({ dir });
-		expect(mockWriteFile).toHaveBeenCalledWith("sandbox/index.html", "<!DOCTYPE html>html", "utf-8");
+		expect(mockWriteFile).toHaveBeenCalledWith("sandbox/index.html", "html", "utf-8");
 	});
 
 	it("override が true のとき、すでに存在していても index.html 上書きする", async () => {
 		const dir = { fullpath: () => "sandbox/html" } as Path;
 		const inputs = { override: true } as ActionInputs;
 		await setup({ dir, inputs });
-		expect(mockWriteFile).toHaveBeenCalledWith("sandbox/html/index.html", "<!DOCTYPE html>html", "utf-8");
+		expect(mockWriteFile).toHaveBeenCalledWith("sandbox/html/index.html", "html", "utf-8");
 	});
 
 	it("ignore が設定されているとき、そのファイル(またはディレクトリ)を無視する", async () => {
@@ -70,6 +70,6 @@ describe("generate", () => {
 		const dir = { fullpath: () => "sandbox/hidden" } as Path;
 		const inputs = { showHiddenFiles: true } as ActionInputs;
 		await setup({ dir, inputs });
-		expect(mockWriteFile).toHaveBeenCalledWith("sandbox/hidden/index.html", "<!DOCTYPE html>html", "utf-8");
+		expect(mockWriteFile).toHaveBeenCalledWith("sandbox/hidden/index.html", "html", "utf-8");
 	});
 });

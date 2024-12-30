@@ -1,4 +1,5 @@
 import type { Path } from "glob";
+import { renderToString } from "preact-render-to-string";
 import { App } from "../../app";
 import type { ActionInputs } from "../../utils/inputs";
 import { CSS } from "../css";
@@ -8,6 +9,11 @@ export interface P {
 	dir: Path;
 	files: Path[];
 	inputs: ActionInputs;
+}
+
+export async function renderHTML(props: P) {
+	const htmlComponent = await HTML(props);
+	return `<!DOCTYPE html>${renderToString(htmlComponent)}`;
 }
 
 const rootLocation = "/" as const;
