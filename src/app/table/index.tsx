@@ -10,7 +10,6 @@ export interface P {
 }
 
 export function Table({ files, isRoot }: P) {
-	const rows = files.map((path) => <FileRow key={path.name} path={path} />);
 	core.debug(`- Generated list: ${files.map((path) => path.name).join(", ")}`);
 	return (
 		<table>
@@ -23,7 +22,9 @@ export function Table({ files, isRoot }: P) {
 			</thead>
 			<tbody>
 				{!isRoot && <TableRow href={"../"} name=".." dataAttr={{ "data-type": "parent" }} />}
-				{rows}
+				{files.map((path) => (
+					<FileRow key={path.name} path={path} />
+				))}
 			</tbody>
 		</table>
 	);
