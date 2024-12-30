@@ -26,7 +26,6 @@ BOLD_RED='\033[1;31m'
 BOLD_GREEN='\033[1;32m'
 BOLD_BLUE='\033[1;34m'
 BOLD_PURPLE='\033[1;35m'
-BOLD_UNDERLINED='\033[1;4m'
 GRAY='\x1b[90m'
 
 # 1. Retrieve the latest release tag
@@ -45,6 +44,11 @@ read -r -p 'Enter a new release tag (vX.X.X format): ' new_tag
 
 # 3. Validate the new release tag
 echo -e "${GRAY}[debug] 3. Validate the new release tag${OFF}"
+if git rev-parse --verify --quiet "$new_tag" > /dev/null; then
+    # The tag already exists
+    echo -e "${BOLD_RED}Error: Tag '${BOLD_PURPLE}$new_tag${BOLD_RED}' already exists. Please choose a different tag.${OFF}"
+    exit 1
+fi
 if echo "$new_tag" | grep -q -E "$semver_tag_regex"; then
 	# Release tag is valid
 	echo -e "Tag: ${BOLD_BLUE}$new_tag${OFF} is valid syntax"
@@ -54,26 +58,33 @@ else
 	exit 1
 fi
 
-# 4. Remind user to update the version field in package.json
-echo -e "${GRAY}[debug] 4. Remind user to update the version field in package.json${OFF}"
-echo -e -n "Make sure the version field in package.json is ${BOLD_BLUE}$new_tag${OFF}. Yes? [Y/${BOLD_UNDERLINED}n${OFF}] "
-read -r YN
+# 4. Check updated the version field in package.json
+echo -e "${GRAY}[debug] 4. Check updated the version field in package.json${OFF}"
+prev_branch=$(git rev-parse --abbrev-ref HEAD)
+git switch "$git_base_branch" > /dev/null
+package_version=$(cat package.json | jq -r '.version')
+new_version=$(echo "$new_tag" | cut -d "v" -f 2)
 
-if [[ ! ($YN == "y" || $YN == "Y") ]]; then
+if [[ ! ("$package_version" == "$new_version") ]]; then
 	# Package.json version field is not up to date
-	echo -e "Please update the package.json version to ${BOLD_PURPLE}$new_tag${OFF} and commit your changes"
+	echo -e "${BOLD_RED}Please update the package.json version to ${BOLD_PURPLE}$new_version${BOLD_RED} and commit your changes${OFF}"
+	git switch "$prev_branch"
 	exit 1
 fi
 
 # 5. Build the project & Commit dist folder
 echo -e "${GRAY}[debug] 5. Build the project & Commit dist folder${OFF}"
 release_branch="releases/$new_tag"
-git switch -c "$release_branch" "$git_base_branch"
-npm run build
-sed -i '' '/dist\//d' .gitignore
+git switch -c "$release_branch" "$git_base_branch" > /dev/null
+if ! npm run build > /dev/null; then
+    echo -e "${BOLD_RED}Build failed. Aborting release process.${OFF}"
+    git switch "$prev_branch" > /dev/null
+    exit 1
+fi
+sed -i.bak '/dist\//d' .gitignore && rm .gitignore.bak
 git add .gitignore
 git add dist
-git commit -m "release: $new_tag"
+git commit -m "release: $new_tag" > /dev/null
 
 # 6. Tag a new release
 echo -e "${GRAY}[debug] 6. Tag a new release${OFF}"
@@ -127,6 +138,6 @@ git push -f $git_remote "$new_major_release_tag"
 echo -e "Tags: ${BOLD_GREEN}$new_tag${OFF}, ${BOLD_GREEN}$new_minor_release_tag${OFF}, ${BOLD_GREEN}$new_major_release_tag${OFF} pushed to remote"
 
 # Completed
-git switch "$git_base_branch"
+git switch "$prev_branch" > /dev/null
 git branch -D "$release_branch"
 echo -e "${BOLD_GREEN}Done!${OFF}"
