@@ -68,6 +68,24 @@ By using the `ignore` option, you can exclude files that match specific patterns
     ignore: "**/*.map"
 ```
 
+### Changing the Display Format
+
+You can change the display format using the `viewType` option.
+Currently, `table` and `list` are available, with the default being `table`.
+Below is an example of the `list` display.
+
+```yml
+- name: Generate Directory listing
+  uses: yKicchan/generate-directory-listing-action@v1
+  with:
+    target: dist
+    viewType: "list"
+```
+
+| Light Theme | Dark Theme |
+| --- | --- |
+| ![light](https://github.com/user-attachments/assets/7046a514-17d9-49e0-b090-8fa462256088) | ![dark](https://github.com/user-attachments/assets/6b952edd-8d82-4dee-a290-19da264580eb) |
+
 ### Customize Appearance
 
 You can load additional CSS to customize the appearance of the generated `index.html`.
@@ -93,8 +111,9 @@ For detailed specifications, check [action.yml](./action.yml).
 
 | Key | Type | Required | Default Value | Description |
 | --- | --- | --- | --- | --- |
-| target | string | yes | - | The target directory to make browsable |
-| ignore | string | no | - | Glob patterns to exclude from the search. Multiple patterns can be specified using commas. |
-| showHiddenFiles | boolean | no | false | Whether to display hidden files |
-| theme | string | no | - | CSS styles to enhance the generated `index.html`. Specify the path relative to the `target` directory. |
-| override | boolean | no | false | Whether to overwrite an existing `index.html` |
+| `target` | string | yes | - | The target directory to make browsable |
+| `viewType` | string | no | `"table"` | Specifies the display format.<br>Currently, `table` and `list` are available options. |
+| `ignore` | string | no | - | Glob patterns to exclude from the search. Multiple patterns can be specified using commas. |
+| `showHiddenFiles` | boolean | no | `false` | Whether to display hidden files |
+| `theme` | string | no | - | CSS styles to enhance the generated `index.html`. Specify the path relative to the `target` directory. |
+| `override` | boolean | no | `false` | Whether to overwrite an existing `index.html` |

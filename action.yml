@@ -14,6 +14,12 @@ inputs:
   target:
     description: 'Path to target directory.'
     required: true
+  viewType:
+    description: |
+      View type of the directory listing.
+      Available options: `table`, `list`.
+    required: false
+    default: 'table'
   ignore:
     description: |
       Pattern to ignore files or directories.

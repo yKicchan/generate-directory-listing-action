@@ -1,15 +1,8 @@
-import fs from "node:fs";
 import * as core from "@actions/core";
-import bytes from "bytes";
-import type { Path } from "glob";
-import { getDirSize } from "../../utils/directories";
+import type { ContentProps } from "../index";
+import { getExt, getHref, getLastModified, getSize } from "../shared/helper";
 
-export interface P {
-	files: Path[];
-	isRoot: boolean;
-}
-
-export function Table({ files, isRoot }: P) {
+export function Table({ files, isRoot }: ContentProps) {
 	core.debug(`- Generated list: ${files.map((path) => path.name).join(", ")}`);
 	return (
 		<table>
@@ -23,31 +16,17 @@ export function Table({ files, isRoot }: P) {
 			<tbody>
 				{!isRoot && <TableRow href={"../"} name=".." dataAttr={{ "data-type": "parent" }} />}
 				{files.map((path) => (
-					<FileRow key={path.name} path={path} />
+					<TableRow
+						key={path.name}
+						dataAttr={{ "data-type": getExt(path) }}
+						href={getHref(path)}
+						name={path.name}
+						size={getSize(path)}
+						lastModified={getLastModified(path)}
+					/>
 				))}
 			</tbody>
 		</table>
-	);
-}
-
-function FileRow({ path }: { path: Path }) {
-	const file = fs.statSync(path.fullpath());
-
-	const href = file.isDirectory() ? `${path.name}/` : path.name;
-	const ext = file.isDirectory() ? "dir" : (path.name.split(".").pop() ?? "");
-
-	const size = file.isFile() ? file.size : file.isDirectory() ? getDirSize(path.fullpath()) : 0;
-
-	return (
-		<TableRow
-			dataAttr={{
-				"data-type": ext,
-			}}
-			href={href}
-			name={path.name}
-			size={bytes(size) ?? "-"}
-			lastModified={file.mtime.toLocaleString()}
-		/>
 	);
 }
 
