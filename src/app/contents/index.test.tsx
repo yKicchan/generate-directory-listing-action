@@ -1,11 +1,10 @@
 import { render } from "@testing-library/preact";
-import type { Path } from "glob";
 import { ViewTypes } from "../../utils/view-types";
 import { Contents, type P } from "./index";
 
 describe("Contents", () => {
-	const setup = ({ files, viewType }: Partial<P> = {}) =>
-		render(<Contents files={files ?? []} viewType={viewType ?? ViewTypes.Table} />);
+	const setup = (props: Partial<P> = {}) =>
+		render(<Contents {...{ files: [], isRoot: true, viewType: ViewTypes.Table, ...props }} />);
 
 	it("contents が表示される", () => {
 		const { getByRole } = setup();

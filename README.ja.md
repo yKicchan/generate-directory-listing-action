@@ -20,7 +20,7 @@ GitHub Pages などで公開する静的なページの閲覧に便利です。
 | --- | --- |
 | ![Light Theme Demo](https://github.com/user-attachments/assets/12db5a6a-4b25-45dd-aab6-eac3163e4d10) | ![Dark Theme Demo](https://github.com/user-attachments/assets/db7691a9-8e37-47ac-920f-aa0b4e634b99) |
 
-この Action を使って生成した実際のデモページは GitHub Pages で公開しています。
+この Action を使って生成した実際のデモページは GitHub Pages で公開しています。  
 https://ykicchan.github.io/generate-directory-listing-action/
 
 ## 使い方
@@ -67,6 +67,24 @@ uses: yKicchan/generate-directory-listing-action@v1
     ignore: "**/*.map"
 ```
 
+### 表示形式を変更する
+
+`viewType` オプションを利用することで、表示形式を変更することができます。  
+現在は `table` と `list` が利用可能で、デフォルトは `table` です。  
+下記は `list` での表示例です。
+
+```yml
+- name: Generate Directory listing
+  uses: yKicchan/generate-directory-listing-action@v1
+  with:
+    target: dist
+    viewType: "list"
+```
+
+| Light Theme | Dark Theme |
+| --- | --- |
+| ![light](https://github.com/user-attachments/assets/7046a514-17d9-49e0-b090-8fa462256088) | ![dark](https://github.com/user-attachments/assets/6b952edd-8d82-4dee-a290-19da264580eb) |
+
 ### 見た目をカスタマイズする
 
 追加の CSS を読み込ませて、出力する `index.html` の見た目をカスタマイズすることができます。
@@ -92,8 +110,9 @@ uses: yKicchan/generate-directory-listing-action@v1
 
 | キーワード | 型 | 必須 | デフォルト値 | 説明 |
 | --- | --- | --- | --- | --- |
-| target | string | yes | - | 探索可能にしたいターゲットディレクトリ |
-| ignore | string | no | - | 探索から排除したい glob パターン、カンマ区切りで複数指定が可能 |
-| showHiddenFiles | boolean | no | false | 隠しファイルを表示するかどうか |
-| theme | string | no | - | 生成される `index.html` を 拡張する CSS スタイル<br>`target` ディレクトリからの相対パスで指定する |
-| override | boolean | no | false | すでに `index.html` が存在する時に上書きするかどうか |
+| `target` | string | yes | - | 探索可能にしたいターゲットディレクトリ |
+| `viewType` | string | no | `table` | 表示形式を指定する<br>現在は `table` と `list` が利用可能 |
+| `ignore` | string | no | - | 探索から排除したい glob パターン、カンマ区切りで複数指定が可能 |
+| `showHiddenFiles` | boolean | no | `false` | 隠しファイルを表示するかどうか |
+| `theme` | string | no | - | 生成される `index.html` を 拡張する CSS スタイル<br>`target` ディレクトリからの相対パスで指定する |
+| `override` | boolean | no | `false` | すでに `index.html` が存在する時に上書きするかどうか |

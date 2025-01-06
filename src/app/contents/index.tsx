@@ -1,23 +1,32 @@
+import type { Path } from "glob";
 import { ViewTypes } from "../../utils/view-types";
-import { Table, type P as TableProps } from "../table";
+import { List } from "./list";
+import { Table } from "./table";
 
-export type P = TableProps & {
+export type P = ContentProps & {
 	viewType: ViewTypes;
+};
+
+export type ContentProps = {
+	files: Path[];
+	isRoot: boolean;
 };
 
 export function Contents(props: P) {
 	return (
 		<main>
-			<SwitchView {...props} />
+			<Switcher {...props} />
 		</main>
 	);
 }
 
-function SwitchView({ viewType, ...tableProps }: P) {
+function Switcher({ viewType, ...contentProps }: P) {
 	switch (viewType) {
 		case ViewTypes.Table:
-			return <Table {...tableProps} />;
+			return <Table {...contentProps} />;
+		case ViewTypes.List:
+			return <List {...contentProps} />;
 		default:
-			return <Table {...tableProps} />;
+			return <Table {...contentProps} />;
 	}
 }

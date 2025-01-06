@@ -1,9 +1,10 @@
 import { isViewType } from "./view-types";
 
 describe("isViewType", () => {
-	it("TABLE のとき true を返す", () => {
+	it.each(["TABLE", "LIST"])("%s のとき true を返す", () => {
 		expect(isViewType("TABLE")).toBe(true);
 	});
+
 	it("大文字小文字を区別する", () => {
 		expect(isViewType("table")).toBe(false);
 	});

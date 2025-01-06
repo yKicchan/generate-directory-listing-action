@@ -1,5 +1,6 @@
 export const ViewTypes = {
 	Table: "TABLE",
+	List: "LIST",
 } as const;
 export type ViewTypes = (typeof ViewTypes)[keyof typeof ViewTypes];
 
