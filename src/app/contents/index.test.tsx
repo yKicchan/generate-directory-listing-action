@@ -15,4 +15,9 @@ describe("Contents", () => {
 		const { getByRole } = setup({ viewType: ViewTypes.Table });
 		expect(getByRole("table")).toBeVisible();
 	});
+
+	it("viewType が List の場合、list が表示される", () => {
+		const { getByRole } = setup({ viewType: ViewTypes.List });
+		expect(getByRole("list")).toBeVisible();
+	});
 });
