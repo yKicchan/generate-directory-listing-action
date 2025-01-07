@@ -26,6 +26,17 @@ describe("getExt", () => {
 		const path = { name: "file.txt", isDirectory: () => false } as Path;
 		expect(getExt(path)).toBe("txt");
 	});
+
+	it("拡張子がない時、type がファイル名になる", () => {
+		const path = { name: "file", isDirectory: () => false } as Path;
+		expect(getExt(path)).toBe("file");
+	});
+
+	it("pop が undefined を返した時、空文字にフォールバックする", () => {
+		const path = { name: "", isDirectory: () => false } as Path;
+		vi.spyOn(Array.prototype, "pop").mockReturnValue(undefined);
+		expect(getExt(path)).toBe("");
+	});
 });
 
 describe("getSize", () => {
@@ -44,6 +55,21 @@ describe("getSize", () => {
 		vi.spyOn(dirs, "getDirSize").mockReturnValue(0);
 
 		expect(getSize(path)).toBe("0B");
+	});
+
+	it("ファイルでもディレクトリでもない時、0 が返される", () => {
+		const path = { name: "file.txt", fullpath: () => "file.txt" } as Path;
+		const file = { isFile: () => false, isDirectory: () => false } as fs.Stats;
+		vi.spyOn(fs, "statSync").mockReturnValue(file);
+
+		expect(getSize(path)).toBe("0B");
+	});
+
+	it("サイズが計算できない時、'-' が返される", () => {
+		const path = { name: "file.txt", fullpath: () => "file.txt" } as Path;
+		const file = { isFile: () => true, size: Number.NaN } as fs.Stats;
+		vi.spyOn(fs, "statSync").mockReturnValue(file);
+		expect(getSize(path)).toBe("-");
 	});
 });
 
