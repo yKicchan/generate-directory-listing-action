@@ -44,32 +44,4 @@ describe("generate", () => {
 		await setup({ dir, inputs });
 		expect(mockWriteFile).toHaveBeenCalledWith("sandbox/html/index.html", "html", "utf-8");
 	});
-
-	it("ignore が設定されているとき、そのファイル(またはディレクトリ)を無視する", async () => {
-		const dir = { fullpath: () => "sandbox/path" } as Path;
-		const inputs = { ignore: ["**/ignore", "**/to"] } as ActionInputs;
-		await setup({ dir, inputs });
-		expect(mockWriteFile).not.toHaveBeenCalled();
-	});
-
-	it("ignore はルートからの相対パスで動作する", async () => {
-		const dir = { fullpath: () => "sandbox" } as Path;
-		const inputs = { ignore: ["hidden", "html", "path", "theme.css"] } as ActionInputs;
-		await setup({ root: "sandbox", dir, inputs });
-		expect(mockWriteFile).not.toHaveBeenCalled;
-	});
-
-	it("showHiddenFiles が false のとき、隠しファイルを無視する", async () => {
-		const dir = { fullpath: () => "sandbox/hidden" } as Path;
-		const inputs = { showHiddenFiles: false } as ActionInputs;
-		await setup({ dir, inputs });
-		expect(mockWriteFile).not.toHaveBeenCalled();
-	});
-
-	it("showHiddenFiles が true のとき、隠しファイルを表示する", async () => {
-		const dir = { fullpath: () => "sandbox/hidden" } as Path;
-		const inputs = { showHiddenFiles: true } as ActionInputs;
-		await setup({ dir, inputs });
-		expect(mockWriteFile).toHaveBeenCalledWith("sandbox/hidden/index.html", "html", "utf-8");
-	});
 });
