@@ -2,18 +2,15 @@ import { promises as fs } from "node:fs";
 import { join } from "node:path";
 import * as core from "@actions/core";
 import bytes from "bytes";
-import { type Path, glob } from "glob";
+import type { Path } from "glob";
 import type { ActionInputs } from "src/utils/inputs";
 import color from "../utils/color";
+import { getFiles } from "../utils/files";
 import { truncate } from "../utils/truncate";
 import { renderHTML } from "./html";
 
 export async function generate(root: string, dir: Path, inputs: ActionInputs) {
-	const files = await glob(join(dir.fullpath(), "*"), {
-		ignore: inputs.ignore.map((i) => join(root, i)),
-		dot: inputs.showHiddenFiles,
-		withFileTypes: true,
-	});
+	const files = await getFiles(dir, root, inputs);
 
 	if (files.length === 0) {
 		core.debug(color.yellow(`[Skip] No targets found in: ${dir.fullpath()}`));
